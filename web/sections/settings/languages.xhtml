@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+<h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{langMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+            
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{langMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{language.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{langMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+                        <h:panelGrid style="align-content: center;">
+                            <rich:dataTable id="LangTable"  value="#{language.languagesList}" var="lang" rows="#{commonObjects.LIST_ROW_SIZE}" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            iterationStatusVar="it"> 
+                                <rich:column >
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+
+                                <rich:column  sortBy="#{lang.language.lanCode}" sortOrder="#{language.lanCodeOrder}"  sortType="custom">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{langMsg.m_Col_Code}" action="#{language.sortByLanguageCode()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>  
+                                    </f:facet>
+                                    <h:outputText value="#{lang.language.lanCode}"/>
+                                    
+                                </rich:column>
+
+                                <rich:column sortBy="#{lang.language.lanNameEn}" sortOrder="#{language.lanNameEnOrder}">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{langMsg.m_Col_Name_EN}" action="#{language.sortByLanguageNameEn()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink> 
+                                    </f:facet>
+                                    <h:outputText value="#{lang.language.lanNameEn}"/>
+                                </rich:column>
+
+                                <rich:column sortBy="#{lang.language.lanNameAr}" sortOrder="#{language.lanNameArOrder}" sortType="custom">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{langMsg.m_Col_Name_AR}" action="#{language.sortByLanguageNameAr()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{lang.language.lanNameAr}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_ChrPage} </f:facet>
+                                    <h:outputText value="#{lang.language.lanChrPerPage}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_DataCode} </f:facet>
+                                    <h:outputText value="#{lang.language.lanDatacode}"/>
+                                </rich:column>
+
+                                <rich:column sortBy="#{lang.language.lanStatus}" sortOrder="#{language.lanStatusOrder}" sortType="custom">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{langMsg.m_Col_Status}" action="#{language.sortByLanguageStatus()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>                                            
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{dictionaryList.getLanguageStatusName(lang.language.lanStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{language.viewRecord(lang.language)}" id="viewButton" onclick="#{lang.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{language.editRecord(lang.language)}" id="editButton" onclick="#{lang.rowSelected()}" rendered="#{lang.language.lanStatus!='D'}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px" rendered="#{lang.language.lanStatus!='D'}"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{language.deleteRecord(lang.language)}"  id="deleteButton" onclick="#{lang.rowSelected()}" rendered="#{lang.language.lanStatus!='D'}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px" rendered="#{lang.language.lanStatus!='D'}"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{language.languagesCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+
+                        </rich:dataTable>
+                            
+                        </h:panelGrid>
+
+                       
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink action="#{language.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{language.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                     
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{langMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{language.stateAdd or language.stateDelete or language.stateEdit or language.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{language.recordStateImage}" height="30px" width="30px"/>
+                            #{langMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{language.recordDetail}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{langMsg.m_Col_Code}:" style="font-weight: bold"/>
+                        <h:panelGroup>
+                            <h:inputText id="languageCode" label="#{langMsg.m_Col_Code}" value="#{language.lanCode}" size="#{rec.lanCode.length()}" readonly="#{language.stateEdit or language.stateView or language.stateDelete}" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+                            <h:graphicImage id="lcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                            <rich:tooltip mode="ajax" target="lcToolTipImg">
+                                <h:panelGrid style="width:200px">
+                                    #{langMsg.m_Hint_LanCode}
+                                </h:panelGrid>
+                            </rich:tooltip>
+                            
+                        </h:panelGroup>
+                        
+                        
+                        <h:outputText value="#{langMsg.m_Col_Name_EN}:" style="font-weight: bold"/>
+                        <h:inputText label="#{langMsg.m_Col_Name_EN}" value="#{language.lanNameEN}" size="70" readonly="#{language.stateView or language.stateDelete}" required="true" requiredMessage="#{msgs.m_Val_required}">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_Name_AR}:
+                        <h:inputText value="#{language.lanNameAR}" size="70" readonly="#{language.stateView or language.stateDelete}">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_ChrPage}:
+                        <h:inputText label="#{langMsg.m_Col_ChrPage}" value="#{language.lanCharPerPage}" size="3" readonly="#{language.stateView or language.stateDelete}">
+                        </h:inputText>
+                        
+                        <h:outputText value="#{langMsg.m_Col_DataCode}:" style="font-weight: bold"/>
+                        <h:panelGroup>
+                            <h:inputText title="#{langMsg.m_Col_DataCode}"  value="#{language.lanDataCode}" size="10" readonly="#{language.stateView or language.stateDelete}" required="true" requiredMessage="#{msgs.m_Val_required}">
+                            </h:inputText>
+                            
+                            <h:graphicImage id="dcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                            <rich:tooltip mode="ajax" target="dcToolTipImg">
+                                <h:panelGrid style="width:200px">
+                                    #{langMsg.m_Hint_DataCode}
+                                </h:panelGrid>
+                            </rich:tooltip>
+        
+                                
+                            
+                          
+                        </h:panelGroup>
+                        
+                        
+                        #{langMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getLanguageStatusName(language.lanStatus)}" size="10" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                    <h:inputHidden id="pageState" value="#{language.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{language.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{language.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{language.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{language.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{language.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+

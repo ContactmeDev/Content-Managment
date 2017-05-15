@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+<f:view>
+       <f:event type="preRenderView" listener="#{UserMastManagedBean.checkLogin}"/>
+       <head><title>IGNORED</title></head>
+<body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{compPMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content">
+             <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+            
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{langMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{language.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{langMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+                        
+                            <rich:dataGrid value="#{company.allDataModel}" var="item">
+                                <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompCode}" style="font-weight: bold"/>
+                                    <h:panelGroup>
+                                        <h:inputText value="#{item.compCode}" style="font-weight: bold"/>
+                                        <h:graphicImage id="ccToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                        <rich:tooltip mode="ajax" target="ccToolTipImg">
+                                            <h:panelGrid style="width:200px">
+                                                #{compPMsg.m_Hint_CompCode}
+                                            </h:panelGrid>
+                                        </rich:tooltip>
+                                    </h:panelGroup>
+                                    
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompName_EN}" style="font-weight: bold"/>
+                                    <h:inputText value="#{item.compName}" style="font-weight: bold"/>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompName_AR}"/>
+                                    <h:inputText value="#{item.compNameAr}"/>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompShortName}"/>
+                                    <h:panelGroup>
+                                        <h:inputText value="#{item.compShortName}"/>
+                                        <h:graphicImage id="csnToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                        <rich:tooltip mode="ajax" target="csnToolTipImg">
+                                            <h:panelGrid style="width:200px">
+                                                #{compPMsg.m_Hint_CompShortName}
+                                            </h:panelGrid>
+                                        </rich:tooltip>
+                                    </h:panelGroup>                                        
+                                   
+                                    <h:outputText value="#{compPMsg.m_Col_CompAddress}"/>
+                                    <h:panelGroup>
+                                        <h:outputText value="#{item.compAddress1}"/>
+                                        <h:outputText value="#{item.compAddress2}"/>
+                                        <h:graphicImage id="caddToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                        <rich:tooltip mode="ajax" target="caddToolTipImg">
+                                            <h:panelGrid style="width:200px">
+                                                #{compPMsg.m_Hint_CompAddress}
+                                            </h:panelGrid>
+                                        </rich:tooltip>
+                                    </h:panelGroup>
+                                </h:panelGrid>        
+                               
+                                <h:panelGrid columns="4" dir="#{localChanger.direction}">    
+                                        
+                                    <h:outputText value="#{compPMsg.m_Col_CompWebSite}"/>
+                                    <h:inputText value="#{item.compWebsite}"/>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompEmail}"/>
+                                    <h:inputText value="#{item.compEmail}"/>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompTel}"/>
+                                    <h:panelGroup>
+                                        <h:inputText value="#{item.compTel1}"/>
+                                        <h:inputText value="#{item.compTel2}"/>
+                                    </h:panelGroup>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompMobile}"/>
+                                    <h:inputText value="#{item.compMobile}"/>
+                                    
+                                    <h:outputText value="#{compPMsg.m_Col_CompFax}"/>
+                                    <h:inputText value="#{item.compFax}"/>
+                                    
+                                    
+                                    
+                                </h:panelGrid>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="#{compPMsg.m_Col_CompStatus}"/>
+                                    <h:inputText value="#{item.compStatus}"/>
+                                </h:panelGrid>
+                            </rich:dataGrid>
+                         
+
+                       
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink action="#{language.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{language.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                     
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            
+
+        </ui:define> 
+    </ui:composition>
+</body>
+</f:view> 
+</html>
+

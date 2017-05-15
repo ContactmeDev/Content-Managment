@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:head>
+        <title>#{msgs.m_Lab_LoginPageTitle}</title>
+        <style>
+            .Bimage{
+                    background-image:url("resources/images/background.jpg");
+                    background-position: center;
+                    background-repeat: repeat;
+                    background-size: cover;
+                    } 
+        </style>
+    </h:head>
+    <h:body styleClass="Bimage">
+        
+            
+        <rich:panel header="#{msgs.m_But_LoginOk}" style="width: 470px; height: 300px;" >
+        <f:view>
+            <h:form id="langPref"> 
+                
+            <h:commandLink action="#{localChanger.arabicAction()}">
+                <h:graphicImage library="images" name="sd.png" style="border: 0px; margin-right: 1em;"/>            
+            </h:commandLink>
+            <h:commandLink action="#{localChanger.englishAction()}">
+                <h:graphicImage library="images" name="english.jpg" style="border: 0px;"/>            
+            </h:commandLink>
+                <p><p><h:outputText value="#{msgs.m_Lab_LoginPageHead}" style="font-style: italic; font-size: 2em; font-family: cursive"/></p></p>    
+                
+                <h:panelGrid columns="3" dir="#{localChanger.direction}" >
+                
+                    
+                    <h:outputLabel value="#{msgs.m_Lab_LoginUsrID}" style="color:black; font-size: 1em; font-family: monospace"/>
+                    <h:inputText id="UserID" value="#{UserMastManagedBean.userId}" label="#{msgs.m_Lab_LoginUsrID}" maxlength="30" accesskey="true" tabindex="1"  style="color:black;  font-size: 1em; font-family: monospace"/>
+                    <h:message for="UserID" errorClass="errors" showDetail="true" showSummary="true"/>
+                    
+                    <h:outputLabel value="#{msgs.m_Lab_LoginPwd}" style="color:black; font-size: 1em; font-family: monospace"/>
+                    <h:inputSecret id="password" value="#{UserMastManagedBean.userPwd}" label="#{msgs.m_Lab_LoginPwd}" tabindex="2" style="color:black;  font-size: 1em; font-family: monospace"/>
+                    <h:message for="password" errorClass="errors" showDetail="true" showSummary="true"/>
+                    
+                    <h:inputHidden></h:inputHidden>
+                    
+                    <h:panelGroup>
+                        <h:outputLabel value="#{msgs.m_Lab_LoginPleaseEnterEntities}" rendered="#{UserMastManagedBean.login == 0}" style="color:navy; font-style: italic; font-size: 1em; font-family: serif"/>
+                        <h:outputLabel value="#{msgs.m_Lab_LoginFailedLogin}" rendered="#{UserMastManagedBean.login == -1 }" style="color:red; font-style: italic; font-size: 1em; font-family: serif"/>
+                        <h:outputLabel value="#{msgs.m_Lab_LoginFailedUserNotActive}" rendered="#{UserMastManagedBean.login == -2}" style="color:red; font-style: italic; font-size: 1em; font-family: serif"/>
+                        <h:outputLabel value="#{msgs.m_Lab_LoginFailedUserDeleted}" rendered="#{UserMastManagedBean.login == -3}" style="color:red; font-style: italic; font-size: 1em; font-family: serif"/>
+                        <h:outputLabel value="#{msgs.m_Lab_LoginFailedUserSuspended}" rendered="#{UserMastManagedBean.login == -4}" style="color:red; font-style: italic; font-size: 1em; font-family: serif"/>
+                    </h:panelGroup>
+                    
+                    <h:inputHidden></h:inputHidden>
+                    <h:panelGroup>
+                        <h:commandButton type="submit" action="#{UserMastManagedBean.doLogin()}" value="#{msgs.m_But_LoginOk}" tabindex="3" style="color:black; font-size: 1.25em;font-weight: bold; font-family: monospace"/>
+                        <h:commandButton action="index" value="#{msgs.m_But_LoginCancel}" style="color:black; font-size: 1.25em; font-weight: bold; font-family: monospace"/>
+                    </h:panelGroup>
+                    
+                    
+                
+                </h:panelGrid>
+                
+                <p><p><h:outputText value="#{msgs.m_Lab_LoginCompanyRights}" style="font-style: italic; font-size: 0.5em"/></p></p> 
+           </h:form>
+        </f:view>
+        </rich:panel>
+        
+    </h:body>
+</html>
+
