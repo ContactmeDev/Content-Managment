@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <application>
+ <locale-config> 
+     <default-locale>en</default-locale> 
+     <supported-locale>ar</supported-locale>
+</locale-config>
+
+
+<resource-bundle>
+<base-name>com.cme.messages.messages</base-name>
+<var>msgs</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.menu</base-name>
+<var>mnuMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.compProfile</base-name>
+<var>compPMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.langMast</base-name>
+<var>langMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.currMast</base-name>
+<var>currMsg</var>
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.serviceType</base-name>
+<var>servTypeMsg</var>
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.service</base-name>
+<var>servMsg</var>
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.subservice</base-name>
+<var>subservMsg</var>
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.appsUrl</base-name>
+<var>appsUMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.workShop</base-name>
+<var>workShopMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.swkApproval</base-name>
+<var>swkApvMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.workShopAll</base-name>
+<var>swkMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.serviceText</base-name>
+<var>srvTxtMsg</var> 
+</resource-bundle>
+
+<message-bundle>com.cme.messages.ValidationMessages</message-bundle>
+
+
+</application>
+
+</faces-config>

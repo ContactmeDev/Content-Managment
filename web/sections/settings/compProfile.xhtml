@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich">
+<f:view>
+       <f:event type="preRenderView" listener="#{UserMastManagedBean.checkLogin}"/>
+       <head><title>IGNORED</title></head>
+<body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{compPMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content">
+             #{compPMsg.m_Lab_PageTitle}
+
+            <rich:tabPanel switchType="client">
+            <rich:tab header="Overview">
+             <h:form>
+                 
+                 <h1><h:outputText value="List"/></h1>
+                 <h:dataTable value="#{company.allDataModel}" var="item">
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="N#"/>
+                         </f:facet>
+                         <h:outputText value="#{company.allDataModel.rowIndex + 1}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompCode"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compCode}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompName"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compName}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompNameAr"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compNameAr}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompShortName"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compShortName}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompAddress1"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compAddress1}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompAddress2"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compAddress2}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompWebsite"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compWebsite}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompEmail"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compEmail}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompTel1"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compTel1}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompTel2"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compTel2}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompMobile"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compMobile}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompFax"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compFax}"/>
+                     </h:column>
+                     <h:column>
+                         <f:facet name="header">
+                             <h:outputText value="CompStatus"/>
+                         </f:facet>
+                         <h:outputText value="#{item.compStatus}"/>
+                     </h:column>
+                 </h:dataTable>
+             </h:form>
+            </rich:tab>
+        <rich:tab header="JSF 2 and RichFaces 4">
+        </rich:tab>
+    </rich:tabPanel>
+
+        </ui:define> 
+    </ui:composition>
+</body>
+</f:view> 
+</html>
+

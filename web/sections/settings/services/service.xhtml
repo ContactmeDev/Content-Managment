@@ -1,0 +1,841 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      http-equiv="content-type" content="text/html;charset=utf-8" 
+      xmlns:a4j="http://richfaces.org/a4j"> 
+<f:view contentType="text/html" encoding="UTF-8"></f:view>
+    
+
+
+
+    <h:head>
+        <title>IGNORED</title>
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </h:head>
+<h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{servMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+          <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>     
+            
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{servMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{service.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{servMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:dataTable value="#{service.servicesList}" var="serv" id="servList" rows="10" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'" 
+                                            binding="#{table}"
+                                            rowKeyVar="rowCount"
+                                            iterationStatusVar="it"> 
+                                              
+                                <rich:column >
+                                    <h:outputText value="#{it.index + 1}"/>
+                                    
+                                </rich:column>
+
+                                <rich:column  sortBy="#{serv.service.srvCode}" sortOrder="#{service.codeOrder}">
+                                    <f:facet name="header"> 
+                                       <a4j:commandLink value="#{servMsg.m_Col_Code}" render="servList" action="#{service.sortByCode()}"  type="custom" />
+                                    </f:facet>
+                                    <h:outputText value="#{serv.service.srvCode}"/> 
+                                </rich:column>
+
+                                <rich:column sortBy="#{serv.service.srvNameEn}" sortOrder="#{service.nameOrder}">
+                                    <f:facet name="header"> 
+                                        <a4j:commandLink value="#{servMsg.m_Col_Name_EN}" render="servList" action="#{service.sortByName()}"  type="custom" /> 
+                                    </f:facet>
+                                    <h:outputText value="#{serv.service.srvNameEn}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{servMsg.m_Col_Name_AR} </f:facet>
+                                    <h:outputText value="#{serv.service.srvNameAr}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{servMsg.m_Col_Status} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getServiceStatusName(serv.service.srvStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{servMsg.m_Col_ShortCode} </f:facet>
+                                    <h:outputText value="#{serv.service.srvShortCode}"/>
+                                </rich:column>
+
+
+                                <rich:column>
+                                    <f:facet name="header"> #{servMsg.m_Col_SubServi} </f:facet>
+                                    <h:commandLink  action="#{service.assignService2SubService(serv.service.srvCode)}" onclick="#{serv.rowSelected()}" rendered="#{serv.service.srvSubService eq 'Y'}">
+                                         <f:ajax execute="@form" render=":formRecord :formMaster :Master :Record"/>
+                                         <h:graphicImage library="images" name="repetitive_tasks.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"  /> 
+                                         
+                                    </h:commandLink >
+                                
+                                </rich:column>
+
+                              
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{service.viewRecord(serv.service)}" id="viewButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{service.editRecord(serv.service)}" id="editButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                              
+                                
+                                <rich:column>
+                                    <h:commandLink action="#{service.deleteRecord(serv.service)}"  id="deleteButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                                
+                               
+                            
+                               <f:facet name="footer">
+                                   <rich:dataScroller maxPages="5" rendered="#{service.serviceCount > commonObjects.LIST_ROW_SIZE}"/>
+                               </f:facet>
+                                
+                        </rich:dataTable>
+                        
+                        
+                        
+                        
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            
+                            <h:commandLink action="#{service.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{service.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{servMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{service.stateAdd or service.stateDelete or service.stateEdit or service.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{service.recordStateImage}" height="30px" width="30px"/>
+                            #{servMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{service.recordDetail}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{servMsg.m_Col_Code}:" style="font-weight: bold"/>
+                        
+                        <h:panelGroup>
+                            
+                            <h:inputText  id="srvCode" label="#{servMsg.m_Col_Code}" value="#{service.srvCode}" size="#{rec.srvCode.length()}" readonly="#{service.stateEdit or service.stateView or service.stateDelete}" required="true" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                            <h:graphicImage id="lcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcToolTipImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{servMsg.m_Hint_ServiceCode} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                        </h:panelGroup>
+                       
+                        <h:outputText value="#{servMsg.m_Col_Name_EN}:"  style="font-weight: bold" />
+                        <h:inputText label="#{servMsg.m_Col_Name_EN}" value="#{service.srvNameEn}" size="40" readonly="#{service.stateView or service.stateDelete}" required="true" >
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_Name_AR}:
+                        <h:panelGroup>
+                           <h:inputText label="#{servMsg.m_Col_Name_AR}" value="#{service.srvNameAR}" size="40" readonly="#{service.stateView or service.stateDelete}">
+                           </h:inputText>
+                           <h:graphicImage id="lcTolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcTolTipImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{servMsg.m_Hint_ServiceNameAr} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                            
+                         </h:panelGroup>
+                        
+                        #{servMsg.m_Col_Desc}:
+                        <h:inputTextarea label="#{servMsg.m_Col_Desc}" value="#{service.srvDesc}"  cols="53" rows="1" readonly="#{service.stateView or service.stateDelete}" />
+                       
+                        
+                        #{servMsg.m_Col_DescAR}:
+                        <h:inputTextarea label="#{servMsg.m_Col_DescAR}" value="#{service.srvDescAR}"  cols="53" rows="1" readonly="#{service.stateView or service.stateDelete}" />
+                        
+                        
+                       
+                        #{servMsg.m_Col_ShortCode}:
+                        <h:inputText label="#{servMsg.m_Col_ShortCode}" value="#{service.srvShortCode}" size="3" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_SrtCode}:
+                       
+                        <h:selectOneMenu label="#{servMsg.m_Col_SrtCode}" value ="#{service.srvSrtCode}" readonly="#{service.stateView or service.stateDelete}" >
+                            
+                            <f:selectItems value="#{commonObjects.DDServType}"  var="DDtype" itemLabel="#{DDtype.srtName}" itemValue="#{DDtype.srtCode}" />
+                            
+                        </h:selectOneMenu>
+                        
+                        #{servMsg.m_Col_ScurrCode}:
+                       
+                        <h:selectOneMenu label="#{servMsg.m_Col_ScurrCode}" value ="#{service.srvCurrCode}" readonly="#{service.stateView or service.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDCurreny}"  var="DDCurr" itemLabel="#{DDCurr.currName}" itemValue="#{DDCurr.currCode}"/>
+                            
+                        </h:selectOneMenu>
+                        #{servMsg.m_Col_SlanCode}:
+                       
+                        <h:selectOneMenu label="#{servMsg.m_Col_SlanCode}" value ="#{service.srvLanCode}" readonly="#{service.stateView or service.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDLanguage}"  var="DDlan" itemLabel="#{DDlan.lanNameEn}" itemValue="#{DDlan.lanCode}"/>
+                            
+                        </h:selectOneMenu>
+                        #{servMsg.m_Col_ScatCode}:
+                       
+                        <h:selectOneMenu label="#{servMsg.m_Col_ScatCode}" value ="#{service.srvScatCode}" readonly="#{service.stateView or service.stateDelete}">
+                            
+                             <f:selectItems value="#{commonObjects.DDScategory}"  var="DDScat" itemLabel="#{DDScat.scatNameEn}" itemValue="#{DDScat.scatCode}"/>
+                            
+                        </h:selectOneMenu>
+                        
+                        
+                        
+                        #{servMsg.m_Col_SenderId}:
+                        <h:inputText label="#{servMsg.m_Col_SenderId}" value="#{service.srvSenderId}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_SenderIdDyn}:
+                        <h:inputText label="#{servMsg.m_Col_SenderIdDyn}" value="#{service.srvSenderIdDyn}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        <h:outputText value="#{servMsg.m_Col_PrefName}:" />
+                  
+                        <h:inputText label="#{servMsg.m_Col_PrefName}" title="#{servMsg.m_Col_PrefName}"  value="#{service.srvPrefName}" size="20" readonly="#{service.stateView or service.stateDelete}" >
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_srvTariff}:
+                        <h:inputText label="#{servMsg.m_Col_srvTariff}" value="#{service.srvTariff}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_srvNumbPageTariff}:
+                        <h:inputText label="#{servMsg.m_Col_srvNumbPageTariff}" value="#{service.srvNumbPageTariff}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_srvOngoSubscriber}:
+                        <h:inputText label="#{servMsg.m_Col_srvOngoSubscriber}"  value="#{service.srvOngoSubscriber}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_srvOngoForm}:
+                        <h:inputText label="#{servMsg.m_Col_srvOngoForm}"  value="#{service.srvOngoFrom}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        #{servMsg.m_Col_srvCheckpoint}:
+                        <h:inputText label="#{servMsg.m_Col_srvCheckpoint}"  value="#{service.srvCheckpoint}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                         <h:outputText value="#{servMsg.m_Col_StartDate}:" />
+                        <rich:calendar   value="#{service.srvStartDate}"  
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        readonly="#{service.stateView or service.stateDelete}"/>
+                   
+                        <h:panelGroup>
+                        <h:outputText value="#{servMsg.m_Col_SubService}:"/>
+                        
+                        <h:selectOneRadio label="#{servMsg.m_Col_SubService}" value="#{service.subSrvRadio}" >
+                            <f:selectItem  itemValue="Yes" itemLabel="Yes"/>
+                            <f:selectItem itemValue="No" itemLabel="No"/>
+                            <f:ajax execute="@this" render=" SubNeed SubEn SubAr UnSubEn UnSubAr" /> 
+                        </h:selectOneRadio>
+                        </h:panelGroup>
+                            
+                        
+                        
+                        <h:panelGroup id="SubNeed">
+                        <h:outputText   value="#{servMsg.m_Col_SubscriptionNeed}:"  rendered="#{service.subSrvRadio eq 'No'}" ></h:outputText>
+                         
+                        <h:selectOneRadio id="radioButton" value="#{service.subescribeRadio}"  rendered="#{service.subSrvRadio eq 'No'}" >
+                            <f:selectItem itemValue="Yes" itemLabel="Yes"/>
+                            <f:selectItem itemValue="No" itemLabel="No"/>
+                            <f:selectItems value="#{commonObjects.listFlex}" rendered="#{localChanger.direction eq 'RTL'}"/>
+                            <f:selectItems value="#{commonObjects.listEnglish}" rendered="#{localChanger.direction eq 'RTL'}"/>
+                            <f:ajax execute="@this" render="SubEn SubAr UnSubEn UnSubAr" /> 
+                        </h:selectOneRadio>   
+                        </h:panelGroup>
+                        
+                          
+                        <h:panelGroup  id ="SubEn" >
+                         <h:outputText value="#{servMsg.m_Col_SubscriptionCodeEn}:" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' ) }"/>
+                         <h:inputText label="#{servMsg.m_Col_SubscriptionCodeEn}" value="#{service.srvSubscriptionCodeEn}" size="3" readonly="#{service.stateView or service.stateDelete}" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}">
+                         </h:inputText>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id ="SubAr">
+                        <h:outputText value="#{servMsg.m_Col_SubscriptionCodeAr}:" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}"/> 
+                        <h:inputText label="#{servMsg.m_Col_SubscriptionCodeAr}" value="#{service.srvSubscriptionCodeAr}"  size="2" readonly="#{service.stateView or service.stateDelete}" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}"> 
+                        </h:inputText>
+                        </h:panelGroup>
+                         
+                        <h:panelGroup id="UnSubEn">
+                        <h:outputText value="#{servMsg.m_Col_UnsubscribeCodeEn}:"  rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}"/>
+                        <h:inputText label="#{servMsg.m_Col_SubscriptionCodeEn}"  value="#{service.srvUnsubscribeCodeEn}" size="7" readonly="#{service.stateView or service.stateDelete}"  rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}">
+                        </h:inputText>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="UnSubAr">
+                        <h:outputText value="#{servMsg.m_Col_UnsubscribeCodeAr}:" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}"/>
+                        <h:inputText label="#{servMsg.m_Col_UnsubscribeCodeAr}" value="#{service.srvUnsubscribeCodeAr}" size="7" readonly="#{service.stateView or service.stateDelete}" rendered="#{(service.subescribeRadio eq 'Yes') and (  service.subSrvRadio eq 'No' )}">
+                        </h:inputText>
+                        </h:panelGroup>
+                       
+                        
+                        
+                         
+                        <h:outputText value="#{servMsg.m_Col_Flex01}:" rendered="#{service.srvCode eq '1002'}"/> 
+                        <h:inputText label="#{servMsg.m_Col_Flex01}" value="#{service.srvFlex01}" size="20" readonly="#{service.stateView or service.stateDelete}" rendered="#{service.srvCode eq '1002'}">
+                        </h:inputText>
+                        
+                        <h:outputText value="#{servMsg.m_Col_Flex02}:" /> 
+                        <h:inputText label="#{servMsg.m_Col_Flex02}" value="#{service.srvFlex02}" size="20" readonly="#{service.stateView or service.stateDelete}" >
+                        </h:inputText>
+                        
+                        <h:outputText value="#{servMsg.m_Col_Flex03}:" /> 
+                        <h:inputText label="#{servMsg.m_Col_Flex03}"  value="#{service.srvFlex03}" size="20" readonly="#{service.stateView or service.stateDelete}" >
+                        </h:inputText>
+                        
+                        <h:outputText value="#{servMsg.m_Col_Flex04}:"/> 
+                        
+                        <h:inputText label="#{servMsg.m_Col_Flex04}"  value="#{service.srvFlex04}" size="20" readonly="#{service.stateView or service.stateDelete}" >
+                        </h:inputText>
+                        
+                        <h:outputText value="#{servMsg.m_Col_Flex05}:"/> 
+                        <h:inputText label="#{servMsg.m_Col_Flex05}"  value="#{service.srvFlex05}" size="20" readonly="#{service.stateView or service.stateDelete}" >
+                        </h:inputText>
+                        
+                         #{servMsg.m_Col_Flex08}:
+                         <h:inputText label="#{servMsg.m_Col_Flex08}" value="#{service.srvFlex08}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                        
+                        <h:panelGroup> 
+                        #{servMsg.m_Col_Flex06}:
+                        <h:selectOneMenu label="#{servMsg.m_Col_Flex06}" value="#{service.srvFlex06}" readonly="#{service.stateView or service.stateDelete}">
+                            <f:selectItems value="#{commonObjects.listFlex}"/>
+                        </h:selectOneMenu>
+                       
+                        </h:panelGroup>
+                        
+                        <h:panelGroup> 
+                        #{servMsg.m_Col_Flex07}:
+                        <h:selectOneMenu label="#{servMsg.m_Col_Flex07}" value="#{service.srvFlex07}" readonly="#{service.stateView or service.stateDelete}">
+                            <f:selectItems value="#{commonObjects.listFlex}"/>
+                        </h:selectOneMenu>
+                        </h:panelGroup>
+                        
+                          
+                            
+                        #{servMsg.m_Col_Flex09}:
+                        <h:inputText label="#{servMsg.m_Col_Flex09}"  value="#{service.srvFlex09}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                          
+                         
+                          
+                         #{servMsg.m_Col_Flex10}:
+                        <h:inputText label="#{servMsg.m_Col_Flex10}"  value="#{service.srvFlex10}" size="20" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText>
+                         
+                         
+                        #{servMsg.m_Col_AddUID}:
+                        <h:selectOneMenu label="#{servMsg.m_Col_AddUID}" value="#{service.srvAddUid}" tabindex="0" readonly="#{service.stateView or service.stateDelete}">
+                        <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="#{servMsg.m_Col_AddDate}:" />
+                        <rich:calendar   value="#{service.srvAddDate}"  
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        readonly="#{service.stateView or service.stateDelete}"/>
+                        
+                         #{servMsg.m_Col_UpdUID}:
+                        <h:selectOneMenu label="#{servMsg.m_Col_UpdUID}" value="#{service.srvUpdUid}" tabindex="0" readonly="#{service.stateView or service.stateDelete}">
+                        <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}"/>
+                        </h:selectOneMenu>
+                            
+                         <h:outputText value="#{servMsg.m_Col_UpdDate}:" />
+                    
+                         
+                         <rich:calendar   value="#{service.srvUpdDate}" 
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        readonly="#{service.stateView or service.stateDelete}"/>
+                         
+                         
+                         #{servMsg.m_Col_srvMaxSendRetry}:
+                         <h:inputText label="#{servMsg.m_Col_srvMaxSendRetry}" value="#{service.srvMaxSendRetry}" size="40" readonly="#{service.stateView or service.stateDelete}">
+                        </h:inputText> 
+                            
+                         
+                        #{servMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getServiceStatusName(service.srvStatus)}" size="3" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                    <h:inputHidden id="pageState" value="#{service.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{service.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{service.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{service.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{service.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{service.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+    
+            <h:form id="Master" dir="#{localChanger.direction}">  
+                <rich:panel header="#{subservMsg.m_Lab_PageTitle}" id="mastersubPanel" rendered="#{subservice.stateView or subservice.stateAdd or subservice.stateDelete or subservice.stateEdit}">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlesubPanel" >
+                    <h:graphicImage library="images" name="#{subservice.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                    
+                    <h:outputText value= "#{service.serviceName}"> 
+                    </h:outputText>
+                
+                <p></p>
+                
+                    #{subservMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:dataTable value="#{subservice.subservicesList}" var="sub" id="subList" rows="10" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            iterationStatusVar="it"
+                                            rowKeyVar="rowCount"> 
+                                <rich:column >
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+
+                                <rich:column  sortBy="#{sub.subservice.ssrvCode}" sortOrder="#{subservice.codeOrder}" >
+                                    <f:facet name="header"> 
+                                         <a4j:commandLink value="#{subservMsg.m_Col_Code}" render="subList" action="#{subservice.sortByCode()}"  type="custom" />
+                                    </f:facet>
+                                        <h:outputText value="#{sub.subservice.ssrvCode}"/>
+                                    
+                                </rich:column>
+
+                                <rich:column sortBy="#{sub.subservice.ssrvNameEn}" sortOrder="#{subservice.nameOrder}" >
+                                    <f:facet name="header"> 
+                                       <a4j:commandLink value=" #{subservMsg.m_Col_Name_EN}" render="subList" action="#{subservice.sortByName()}"  type="custom"  />
+                                    </f:facet>
+                                    <h:outputText value="#{sub.subservice.ssrvNameEn}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{subservMsg.m_Col_Name_AR} </f:facet>
+                                    <h:outputText value="#{sub.subservice.ssrvNameAr}"/>
+                                </rich:column>
+
+                              
+
+                                <rich:column>
+                                    <f:facet name="header"> #{subservMsg.m_Col_Status} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getSubServiceStatusName(sub.subservice.ssrvStatus)}"/>
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{subservMsg.m_Col_StartDate} </f:facet>
+                                    <h:outputText value="#{sub.subservice.ssrvStartDate}"/>
+                                </rich:column>
+
+                               
+
+                                <rich:column>
+                                    <h:commandLink action="#{subservice.viewRecord(sub.subservice)}" id="viewSubButton" onclick="#{sub.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{subservice.editRecord(sub.subservice)}" id="editSubButton" onclick="#{sub.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{subservice.deleteRecord(sub.subservice)}"  id="deleteSubButton" onclick="#{sub.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                               <f:facet name="footer">
+                                   <rich:dataScroller maxPages="5" rendered="#{subservice.subsrvCount > commonObjects.LIST_ROW_SIZE}"/>
+                               </f:facet>
+
+                        </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addsubButton">
+                            <h:commandLink action="#{subservice.addRecord()}" id="addsubComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{subservice.stateRefresh()}" id="refreshListsubButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            
+            <p></p>
+            
+            <h:form id="Record" dir="#{localChanger.direction}">
+                <rich:panel header="#{subservMsg.m_Lab_RecordSectionHeader}" id="recordsubPanel" rendered="#{subservice.detailStateAdd or subservice.detailStateDelete or subservice.detailStateEdit or subservice.detailStateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{subservice.recordStateImage}" height="30px" width="30px"/>
+                            #{subservMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+                        
+
+                    </P>
+                <rich:dataGrid value="#{subservice.recordDetail}" var="rec" id="subdetail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{subservMsg.m_Col_Code}:" style="font-weight: bold"/>
+                        
+                        <h:panelGroup>
+
+                            <h:inputText id="ssrvCode" label="#{subservMsg.m_Col_Code}" value="#{subservice.ssrvCode}" size="#{rec.ssrvCode.length()}" readonly="#{subservice.stateEdit or subservice.stateView or subservice.stateDelete}" required="true" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                             <h:graphicImage id="lcToolTpImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcToolTpImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{subservMsg.m_Hint_ServiceCode} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                            
+                        </h:panelGroup>
+                        
+                           
+                        
+                        
+                        <h:outputText value="#{subservMsg.m_Col_Name_EN}:" style="font-weight: bold"/>
+                        <h:inputText label="#{subservMsg.m_Col_Name_EN}" value="#{subservice.ssrvNameEn}" size="40" readonly="#{subservice.stateView or subservice.stateDelete}" required="true" >
+                        </h:inputText>
+                        
+                        #{subservMsg.m_Col_Name_AR}:
+                        <h:panelGroup>
+                          <h:inputText label="#{subservMsg.m_Col_Name_AR}" value="#{subservice.ssrvNameAr}" size="40" readonly="#{subservice.stateView or subservice.stateDelete}">
+                          </h:inputText>
+                          
+                           <h:graphicImage id="lcTolTpImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcTolTpImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{subservMsg.m_Hint_ServiceNameAr} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                            </h:panelGroup>
+                        
+                        #{subservMsg.m_Col_Desc}:
+                        <h:inputTextarea label="#{subservMsg.m_Col_Name_Desc}" value="#{subservice.ssrvDesc}" cols="53" rows="1"  readonly="#{subservice.stateView or subservice.stateDelete}"/>
+                        
+                        
+                        #{subservMsg.m_Col_DescAR}:
+                        <h:inputTextarea label="#{subservMsg.m_Col_Name_DescAR}" value="#{subservice.ssrvDescAR}" cols="53" rows="1" readonly="#{subservice.stateView or subservice.stateDelete}"/>
+                        
+                        
+                        
+                        #{subservMsg.m_Col_SenderId}:
+                        <h:inputText label="#{subservMsg.m_Col_SenderId}"  value="#{subservice.ssrvSenderId}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_SenderIdDyn}:
+                        <h:inputText label="#{subservMsg.m_Col_SenderIdDyn}"  value="#{subservice.ssrvSenderIdDyn}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_srvBased}:
+                        <h:inputText label="#{subservMsg.m_Col_srvBased}" value="#{subservice.ssrvOsBased}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_srvTariff}:
+                        <h:inputText label="#{subservMsg.m_Col_srvTariff}" value="#{subservice.ssrvTariff}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_srvNumbPageTariff}:
+                        <h:inputText label="#{subservMsg.m_Col_srvNumbPageTariff}" value="#{subservice.ssrvNumbPageTariff}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_srvCheckpoint}:
+                        <h:inputText label="#{subservMsg.m_Col_srvCheckpoint}" value="#{subservice.ssrvCheckpoint}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        
+                        #{subservMsg.m_Col_srvOngoForm}:
+                        <h:inputText label="#{subservMsg.m_Col_srvOngoForm}" value="#{subservice.ssrvOngoFrom}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                        #{subservMsg.m_Col_srvOngoSubscriber}:
+                        <h:inputText label="#{subservMsg.m_Col_srvOngoSubscriber}"  value="#{subservice.ssrvOngoSubscriber}" size="20" readonly="#{subservice.stateView or subservice.stateDelete}">
+                        </h:inputText>
+                        
+                         #{subservMsg.m_Col_SrtCode}:
+                       
+                        <h:selectOneMenu label="#{subservMsg.m_Col_SrtCode}" value ="#{subservice.ssrvSrtCode}" readonly="#{subservice.stateView or subservice.stateDelete}" >
+                            
+                            <f:selectItems value="#{commonObjects.DDServType}"  var="DDtype" itemLabel="#{DDtype.srtName}" itemValue="#{DDtype.srtCode}" />
+                            
+                        </h:selectOneMenu>
+                        
+                        #{subservMsg.m_Col_ScurrCode}:
+                       
+                        <h:selectOneMenu label="#{subservMsg.m_Col_ScurrCode}" value ="#{subservice.ssrvCurrCode}" readonly="#{subservice.stateView or subservice.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDCurreny}"  var="DDCurr" itemLabel="#{DDCurr.currName}" itemValue="#{DDCurr.currCode}"/>
+                            
+                        </h:selectOneMenu>
+                        #{subservMsg.m_Col_SlanCode}:
+                       
+                        <h:selectOneMenu label="#{subservMsg.m_Col_SlanCode}" value ="#{subservice.ssrvLanCode}" readonly="#{subservice.stateView or subservice.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDLanguage}"  var="DDlan" itemLabel="#{DDlan.lanNameEn}" itemValue="#{DDlan.lanCode}"/>
+                            
+                        </h:selectOneMenu>
+                        #{subservMsg.m_Col_ScatCode}:
+                       
+                        <h:selectOneMenu label="#{subservMsg.m_Col_ScatCode}"  value ="#{subservice.ssrvScatCode}" readonly="#{subservice.stateView or subservice.stateDelete}">
+                            
+                           <f:selectItems value="#{commonObjects.DDScategory}"  var="DDScat" itemLabel="#{DDScat.scatNameEn}" itemValue="#{DDScat.scatCode}"/>
+                            
+                        </h:selectOneMenu>
+                   
+                        <h:panelGroup>
+                        <h:outputText value="#{subservMsg.m_Col_SubService}:"/>
+                      
+                        <h:selectOneRadio value="#{subservice.subSrvRadio}" >
+                        <f:selectItem  itemValue="Yes" itemLabel="Yes"/>
+                        <f:selectItem itemValue="No" itemLabel="No"/>
+                        <f:ajax execute="@this" render=" SubNeed1 SubEn1 SubAr1 UnSubEn1 UnSubAr1" /> 
+                        </h:selectOneRadio>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="SubNeed1">
+                         <h:outputText   value="#{subservMsg.m_Col_SubscriptionNeed}:"  rendered="#{subservice.subSrvRadio eq 'No'}" ></h:outputText>
+                        
+                         <h:selectOneRadio id="radioButton2" value="#{subservice.subescribeRadio}"  rendered="#{subservice.subSrvRadio eq 'No'}" >
+                            <f:selectItem itemValue="Yes" itemLabel="Yes"/>
+                            <f:selectItem itemValue="No" itemLabel="No"/>
+                            <f:ajax execute="@this" render="SubEn1 SubAr1 UnSubEn1 UnSubAr1" /> 
+                        </h:selectOneRadio>    
+                        </h:panelGroup>
+                  
+                        <h:panelGroup id ="SubEn1">
+                        <h:outputText value="#{subservMsg.m_Col_SubscriptionCodeEn}:" rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}"/>
+                        <h:inputText label="#{subservMsg.m_Col_SubscriptionCodeEn}" value="#{subservice.ssrvSubscriptionCodeEn}" size="3" readonly="#{subservice.stateView or subservice.stateDelete}" rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}">
+                        </h:inputText>
+                        </h:panelGroup>
+                        
+                        
+                        <h:panelGroup id ="SubAr1">
+                        <h:outputText value="#{subservMsg.m_Col_SubscriptionCodeAr}:"  rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}"/>
+                        <h:inputText label="#{subservMsg.m_Col_SubscriptionCodeAr}" value="#{subservice.ssrvSubscriptionCodeAr}"  size="2" readonly="#{subservice.stateView or subservice.stateDelete}" rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}">
+                        </h:inputText>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id ="UnSubEn1">
+                        <h:outputText value="#{subservMsg.m_Col_UnsubscribeCodeEn}:"  rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}"/>
+                        <h:inputText label="#{subservMsg.m_Col_SubscriptionCodeEn}" value="#{subservice.ssrvUnsubscribeCodeEn}" size="7" readonly="#{subservice.stateView or subservice.stateDelete}"  rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}">
+                        </h:inputText>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id ="UnSubAr1">
+                        <h:outputText value="#{subservMsg.m_Col_UnsubscribeCodeAr}:" rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}"/>
+                        <h:inputText label="#{subservMsg.m_Col_UnsubscribeCodeAr}" value="#{subservice.ssrvUnsubscribeCodeAr}" size="7" readonly="#{subservice.stateView or subservice.stateDelete}" rendered="#{(subservice.subescribeRadio eq 'Yes') and (  subservice.subSrvRadio eq 'No')}">
+                        </h:inputText>
+                        </h:panelGroup>
+                        
+                         #{subservMsg.m_Col_AddUID}:
+                        <h:selectOneMenu label="#{subservMsg.m_Col_AddUID}" value="#{subservice.srvAddUid}" tabindex="0" readonly="#{subservice.stateView or subservice.stateDelete}">
+                            <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}"/>
+                         </h:selectOneMenu>
+                        
+                        <h:outputText value="#{servTypeMsg.m_Col_AddDate}:" />
+                     
+                        <rich:calendar value="#{subservice.ssrvAddDate}" 
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        readonly="#{subservice.stateView or subservice.stateDelete}" />
+                        
+                         #{subservMsg.m_Col_UpdUID}:
+                         
+                         <h:selectOneMenu label="#{subservMsg.m_Col_UpdUID}" value="#{subservice.ssrvUpdUid}" tabindex="0" readonly="#{subservice.stateView or subservice.stateDelete}">
+                            <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}"/>
+                         </h:selectOneMenu>
+                            
+                         <h:outputText value="#{subservMsg.m_Col_UpdDate}:" />
+                     
+                         <rich:calendar value="#{subservice.ssrvUpdDate}"
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        readonly="#{subservice.stateView or subservice.stateDelete}" />
+                         
+           
+                  
+                        #{subservMsg.m_Col_Status}: 
+                        <h:inputText value="#{dictionaryList.getSubServiceStatusName(sub.subservice.ssrvStatus)}" size="3" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                    <h:inputHidden id="pageState" value="#{subservice.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{subservice.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{subservice.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{subservice.editMessage}"/>
+                    
+                     <P>
+                    
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="savesubButton" type="submit" action="#{subservice.saveRecord()}" onclick="return confirm('Are you sure?')">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{subservice.stateRefresh()}"  id="refreshsubButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                     </P>
+                
+                
+                </rich:panel>
+            </h:form>
+           
+        </ui:define> 
+    </ui:composition>
+</h:body>
+</html>
+

@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+ 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+    <h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{swkApvMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+             
+            <h:form id="formRecord" dir="#{localChanger.direction}">  
+            <rich:panel header="#{swkApvMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{workshop.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{swkApvMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:dataTable value="#{workshop.workshopsList}" var="swk" id="swkList" rows="10" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            binding="#{table}"
+                                            rowKeyVar="rowCount"
+                                            iterationStatusVar="it"> 
+                                <rich:column >
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_Service} </f:facet>
+                                    <h:outputText value="#{workshop.getSrviceName(swk.workshop.swkSrvCode.srvCode,localChanger.direction)}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_Sservice} </f:facet>
+                                    <h:outputText value="#{workshop.getSsrviceName(swk.workshop.swkSsrvCode.ssrvCode,localChanger.direction)}"/> 
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_ExecDate} </f:facet>
+                                    <h:outputText value="#{swk.workshop.swkExecDate}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_Uid} </f:facet>
+                                    <h:outputText value="#{swk.workshop.swkAddUid}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_Content} </f:facet>
+                                    <h:outputText value="#{swk.workshop.swkMsg} "/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkApvMsg.m_Col_Status} </f:facet>
+                                    <h:selectOneRadio  value="#{swk.workshop.swkStatus}">
+                                        <f:selectItem  itemLabel="#{swkApvMsg.m_check_Approve}" itemValue="A"/>
+                                        <f:selectItem itemLabel="#{swkApvMsg.m_check_notApprove}" itemValue="N"/> 
+                                        <f:selectItem itemLabel="#{swkApvMsg.m_check_Delete}" itemValue="D"/> 
+                                    </h:selectOneRadio>
+                                </rich:column>
+                            
+                                <f:facet name="footer">
+                                   <rich:dataScroller maxPages="5" rendered="#{workshop.swkCount > commonObjects.LIST_ROW_SIZE}"/>
+                                </f:facet>
+                            
+
+                        </rich:dataTable>
+                        
+                        
+
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    <h:inputHidden id="pageState" value="#{workshop.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{workshop.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{workshop.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{workshop.editMessage}"/>
+                    
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            
+                            <h:commandLink action="#{workshop.saveChanges()}" id="addComLink" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage id="addImg" library="images" name="file_save.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{workshop.stateRefresh()}"  type="reset" id="refreshListButton">
+                                <f:ajax execute="@this"  id="refreshAjax" render=":formRecord"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                    </P>
+
+                    </div>
+                
+       
+            </rich:panel>
+                
+          </h:form>
+           
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+

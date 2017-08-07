@@ -1,0 +1,177 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"   
+      xmlns:a4j="http://richfaces.org/a4j"> 
+ 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+
+    <h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{workShopMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>
+            <h:outputScript library="javascript" name="saveResultAlert.js" target="head"/> 
+             
+            <h:form id="formRecord" dir="#{localChanger.direction}">  
+            <rich:panel header="#{workShopMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="field.png" height="50px" width="50px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{workShopMsg.m_Desc}
+                
+                <p></p>
+                <br/>
+                
+                
+                    
+                    <h:panelGrid columns="4" dir="#{localChanger.direction}">
+                    
+                    
+                    <h:outputText value="#{workShopMsg.m_Col_Swk}:" style="font-weight: normal;font-style: oblique ;font-weight:bold" />
+                    <h:inputText  value="#{workshop.swkId}" size="5" readonly="true"/>
+                    
+                    <h:inputHidden id="space3"/> 
+                    <h:inputHidden id="space4"/>
+                                 
+                    <h:outputText value="#{workShopMsg.m_Col_Service}:" style="font-weight:bold"/> 
+                    <h:selectOneMenu label="#{workShopMsg.m_label_Service}" id="srvID" value ="#{workshop.swkSrvCode}" required="true">                         
+                        <f:ajax event="change" listener="#{service.assignService2SubService(workshop.swkSrvCode)}" execute="@this" render=":formRecord" /> 
+                        <f:selectItem itemValue="" itemLabel="Choose a Service" noSelectionOption="true"/>
+                        <f:selectItems value="#{commonObjects.DDService}"  var="DDsrv" itemLabel="#{DDsrv.srvNameEn}" itemValue="#{DDsrv.srvCode}" />
+                    </h:selectOneMenu>
+                     
+                     
+                     
+                    <h:inputHidden rendered="#{not workshop.hasSubservice()}"/> 
+                    <h:inputHidden rendered="#{not workshop.hasSubservice()}"/>
+                    
+                    
+                    <h:outputText value="#{workShopMsg.m_Col_SubService}:" rendered="#{workshop.hasSubservice()}" style="font-weight:bold"/> 
+                    <h:selectOneMenu label="#{workShopMsg.m_label_SubService}" id="ssrvID" value ="#{workshop.swkSsrvCode}"  rendered="#{workshop.hasSubservice()}" required="#{workshop.hasSubservice()}"> 
+                        <f:ajax event="change" listener="#{workshop.assignServ2Sserv(workshop.swkSrvCode)}" execute="@this" render=":formRecord" /> 
+                        <f:selectItem itemValue="" itemLabel="Choose a Subservice" noSelectionOption="true"/>
+                        <f:selectItems value="#{subservice.subservicesList}"  var="DDssrv" itemLabel="#{DDssrv.subservice.ssrvNameEn}" itemValue="#{DDssrv.subservice.ssrvCode}" />
+                    </h:selectOneMenu>
+                    
+                 
+                    <h:outputText value="#{workShopMsg.m_Col_Lan}:" style="font-weight:bold"/>
+                    <h:selectOneMenu  label="#{workShopMsg.m_label_Lan}" id="language" value ="#{workshop.swkLanCode}" required="true">
+                        <f:selectItem itemValue="" itemLabel="Choose a Language" noSelectionOption="true"/>
+                        <f:selectItems value="#{commonObjects.DDLanguage}"  var="DDlan" itemLabel="#{DDlan.lanNameEn}" itemValue="#{DDlan.lanCode}" />
+ 
+                    </h:selectOneMenu>
+                      
+                   
+                    <h:outputText value="#{workShopMsg.m_Col_Numb}:" /> 
+                    <h:inputText id ="name" value="#{workshop.swkNubSub}" readonly="true"/>   
+                    
+                    
+                       
+                   <h:outputText value=" #{workShopMsg.m_Col_Schedule}:" style="font-weight:bold"/>
+                   <h:selectOneMenu label="#{workShopMsg.m_label_Schedule}" id="Schedule" value ="#{workshop.swkScheduled}" required="true"> 
+                        <f:selectItem itemValue="" itemLabel="Select Schedule" noSelectionOption="true"/>
+                        <f:selectItem itemValue="SEND_NOW" itemLabel="Send NOW"/>
+                        <f:selectItem itemValue="SEND_LATER" itemLabel="Schedule Send"/>
+                        <f:ajax execute="@this" render="date execDate" /> 
+                        </h:selectOneMenu>
+                   
+                   
+                                         
+                    <h:panelGroup  id ="date" >
+                        <h:outputText  value="#{workShopMsg.m_Col_Date}:" style="font-weight:bold" rendered="#{workshop.swkScheduled eq 'SEND_LATER'}"></h:outputText>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup  id ="execDate" >
+                        <rich:calendar value="#{workshop.swkExecDate}" rendered="#{workshop.swkScheduled eq 'SEND_LATER'}" 
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        required="#{workshop.swkScheduled eq 'SEND_LATER'}"/>
+                    
+
+                    </h:panelGroup>
+                   
+                    <h:outputText value=" #{workShopMsg.m_Col_ID}:" /> 
+                    <h:inputText value="#{workshop.swkSenderId}"  size="7" readonly="true" />
+                    
+                    <h:inputHidden id="space1"/> 
+                    <h:inputHidden id="space2"/>
+                
+                </h:panelGrid>
+                    
+                    
+                   
+                    
+                   
+
+                   
+                
+                     
+                
+                
+                <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                    
+                    <h:outputText value="#{workShopMsg.m_Col_Content}:" style="font-weight:bold"/>
+                    <h:inputTextarea label="contentText" id="contentText" value="#{workshop.swkMsg}"  cols="60" rows="6" required="true"/>
+
+                </h:panelGrid>
+                
+                <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                    <h:outputText value="#{workShopMsg.m_Col_userAdd}:" style="font-weight:bold"/>
+                    <h:selectOneMenu value ="#{workshop.swkAddUid}" tabindex="0" required="true">
+                        <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                
+          
+                    
+                    <br/> <br/> 
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    <h:inputHidden id="pageState" value="#{workshop.currentState}"/>
+                    <h:inputHidden id="editMsg" value="#{workshop.editMessage}"/>
+                    <h:inputHidden id="viewMsg" value="#{workshop.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{workshop.deleteMessage}"/>
+                    <h:inputHidden id="alertMsg" value="#{workshop.alertMessage}"/>
+                    
+                    
+                    
+                
+                    <h:panelGrid columns="3" style="alignment-adjust: middle" id="addButton">
+                        
+                                                
+                        <a4j:commandLink  onclick="return saveConfirm(this.form)" action="#{workshop.sendSubmit()}" oncomplete="return saveResultAlert(this.form)" render="formRecord" disabled="#{workshop.stateSave}" >
+                           <h:graphicImage id="Img" library="images" name="file_save.png" style="border: 0px; margin-right: 1em;" height="30px" width="30px"/>            
+                        </a4j:commandLink >
+                        
+                      
+                        
+                        <h:commandLink action="#{workshop.refresh()}" type="reset"  id="refreshButton">
+                            <f:ajax execute="@this"  id="addAjax" render=":formRecord"/>
+                            <h:graphicImage library="images" name="refresh_add.png" style="border: 0px; margin-right: 1em;" height="30px" width="30px"/>            
+                        </h:commandLink>
+                      
+                    </h:panelGrid>
+            
+            </rich:panel>
+            </h:form>     
+      </ui:define> 
+    </ui:composition>
+</h:body> 
+</html>

@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+<h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{swkMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+            
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{swkMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{workShopAll.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{swkMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:extendedDataTable value="#{workShopAll.workshopsList}" var="swk" id="swkList" rows="10" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            binding="#{table}"
+                                            rowKeyVar="rowCount"
+                                            iterationStatusVar="it"
+                                            selectionMode="none"
+                                            frozenColumns="6">
+                                <rich:column >
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+
+                                <rich:column  sortBy="#{swk.workShopAll.swkId} " sortOrder="#{workShopAll.codeOrder}" >
+                                    <f:facet name="header">
+                                        <a4j:commandLink value="#{swkMsg.m_Col_Swk}" render="swkList" action="#{workShopAll.sortByCode()}"  type="custom" /></f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkId}"/>
+                                    
+                                </rich:column>
+                                
+                                <rich:column filterValue="#{workShopAll.srvFilter}"
+                                             filterExpression="#{fn:containsIgnoreCase(swk.workShopAll.swkSrvCode,workShopAll.srvFilter)}"
+                                             filterType="custom"
+                                             sortBy="##{swk.workShopAll.swkSrvCode}"
+                                             sortOrder="#{workShopAll.srvOrder}" >
+                                    
+                                    <f:facet name="header">
+                                        <a4j:commandLink value="#{swkMsg.m_Col_Service}" render="swkList" action="#{workShopAll.sortBySrv()}"  type="custom" />
+                                        
+                                            <h:inputText value="#{workShopAll.srvFilter}">
+                                                 <a4j:ajax event="blur" render="swkList" execute="@this"/>
+                                            </h:inputText>
+                                   </f:facet>
+                                    
+                                    <h:outputText value="##{workShopAll.getSrviceName(swk.workShopAll.swkSrvCode.srvCode,localChanger.direction)}"/>
+                                    
+                                </rich:column>
+
+                                <rich:column filterValue="#{workShopAll.ssrvFilter}"
+                                             filterExpression="#{fn:containsIgnoreCase(swk.workShopAll.swkSsrvCode,workShopAll.ssrvFilter)}"
+                                             filterType="custom"
+                                             sortBy="#{swk.workShopAll.swkSsrvCode} " 
+                                             sortOrder="#{workShopAll.ssrvOrder}">
+                                    
+                                    <f:facet name="header">
+                                        <a4j:commandLink value="#{swkMsg.m_Col_SubService}" render="swkList" action="#{workShopAll.sortBySsrv()}"  type="custom" />
+                                        
+                                            <h:inputText value="#{workShopAll.ssrvFilter}">
+                                                 <a4j:ajax event="blur" render="swkList" execute="@this"/>
+                                            </h:inputText>
+                                       
+                                    </f:facet>
+                                    
+                                    <h:outputText value="#{workShopAll.getSsrviceName(swk.workShopAll.swkSsrvCode.ssrvCode,localChanger.direction)}"/>
+                                    
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_Lan} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkLanCode}"/>
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_Content} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkMsg}"/>
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_Schedule} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkScheduled}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_executed} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkExecuted}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_addDate} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkAddDate}"/>
+                                </rich:column>
+                            
+                            
+                                 <rich:column>
+                                     <f:facet name="header"> #{swkMsg.m_Col_executeDate} </f:facet>
+                                     <h:outputText value="#{swk.workShopAll.swkExecDate}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_actuDate} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkActuDate}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_userAdd} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkAddUid}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_smsTotal} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkSmsTotal}"/>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_dlvTotal} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkDlvTotal}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{swkMsg.m_Col_postTotal} </f:facet>
+                                    <h:outputText value="#{swk.workShopAll.swkPostTotal}"/>
+                                </rich:column>
+                            
+                              
+                                <rich:column>
+                                    <f:facet name="header"> #{servTypeMsg.m_Col_Status} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getWorkshopStatusName(swk.workShopAll.swkStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{workShopAll.viewRecord(swk.workShopAll)}" id="viewButton" onclick="#{swk.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{workShopAll.editRecord(swk.workShopAll)}" id="editButton" onclick="#{swk.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                       
+                                <f:facet name="footer">
+                                    <rich:dataScroller maxPages="5" rendered="#{workShopAll.workShopCount > commonObjects.LIST_ROW_SIZE}"/>
+                                </f:facet>
+
+                        </rich:extendedDataTable>
+                        
+
+                       <P>
+                
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{swkMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{workShopAll.stateAdd or workShopAll.stateDelete or workShopAll.stateEdit or workShopAll.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{workShopAll.listStateImage}" height="30px" width="30px"/>
+                            #{swkMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{workShopAll.recordDetail}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{swkMsg.m_Col_Swk}:" style="font-weight: bold"/>
+                        <h:panelGroup>
+                            <h:inputText id="swkId" label="#{swkMsg.m_Col_Swk}" value="#{workShopAll.swkId}" size="#{swk.swkId.length()}" readonly="#{workShopAll.stateEdit or workShopAll.stateView or workShopAll.stateDelete}" required="true" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                           <h:graphicImage id="lcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcToolTipImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{swkMsg.m_Hint_Swk} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                        </h:panelGroup>
+                        
+                        
+                        <h:outputText value="#{swkMsg.m_Col_Service}:" style="font-weight: bold"/>
+                        <h:selectOneMenu label="#{swkMsg.m_Col_Service}" value ="#{workShopAll.swkSrvCode}" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDService}"  var="DDsrv" itemLabel="#{DDsrv.srvNameEn}" itemValue="#{DDsrv.srvCode}"/>
+                            
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="#{swkMsg.m_Col_SubService}:" style="font-weight: bold"/>
+                        
+                        <h:selectOneMenu label="#{swkMsg.m_Col_SubService}" value ="#{workShopAll.swkSsrvCode}" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                            
+                            <f:selectItems value="#{commonObjects.DDSubservice}"  var="DDssrv" itemLabel="#{DDssrv.ssrvNameEn}" itemValue="#{DDssrv.ssrvCode}"/>
+                            
+                        </h:selectOneMenu>
+                        
+                      
+                        #{swkMsg.m_Col_Schedule}:
+                        <h:inputText label="#{swkMsg.m_Col_Schedule}" value="#{workShopAll.swkScheduled}" size="15" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                        </h:inputText>   
+                        
+                        #{swkMsg.m_Col_Lan}:
+                        <h:inputText label="#{swkMsg.m_Col_Lan}" value="#{workShopAll.swkLanCode}" size="15" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                        </h:inputText> 
+                        
+                         <h:outputText value="#{swkMsg.m_Col_Content}:" />
+                     
+                         <h:inputTextarea label="#{swkMsg.m_Col_Content}" value="#{workShopAll.swkMsg}"  cols="53" rows="5" readonly="#{workShopAll.stateView or workShopAll.stateDelete}"  />
+                                 
+                        
+                        
+                         #{swkMsg.m_Col_executed}:
+                         <h:inputText label="#{swkMsg.m_Col_executed}" value="#{workShopAll.swkExecuted}" size="1" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                        </h:inputText> 
+                            
+                         <h:outputText value="#{swkMsg.m_Col_addDate}:" />
+                     
+                         <h:inputText title="#{swkMsg.m_Col_addDate}"  value="#{workShopAll.swkAddDate}" size="15"  label = "Date" readonly="#{workShopAll.stateView or workShopAll.stateDelete}" >
+                                 <f:convertDateTime pattern = "dd-MM-yyyy" />
+                        </h:inputText>
+                         
+                         <h:outputText value="#{swkMsg.m_Col_executeDate}:" />
+                     
+                         <h:inputText title="#{swkMsg.m_Col_executeDate}"  value="#{workShopAll.swkExecDate}" size="15"  label = "Date" readonly="#{workShopAll.stateView or workShopAll.stateDelete}" >
+                                 <f:convertDateTime pattern = "dd-MM-yyyy" />
+                        </h:inputText>
+                         
+                         <h:outputText value="#{swkMsg.m_Col_actuDate}:" />
+                     
+                         <h:inputText title="#{swkMsg.m_Col_addDate}"  value="#{workShopAll.swkActuDate}" size="15"  label = "Date" readonly="#{workShopAll.stateView or workShopAll.stateDelete}" >
+                                 <f:convertDateTime pattern = "dd-MM-yyyy" />
+                        </h:inputText>
+                         
+                          #{swkMsg.m_Col_userAdd}:
+                        
+                          <h:inputText label="#{swkMsg.m_Col_userAdd}" value="#{workShopAll.swkAddUid}" size="20" readonly="#{workShopAll.stateView or workShopAll.stateDelete}"/>
+                        
+                      
+                         #{swkMsg.m_Col_smsTotal}:
+                         <h:inputText label="#{swkMsg.m_Col_smsTotal}"  value="#{workShopAll.swkSmsTotal}" size="20" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                        </h:inputText>   
+                        
+                         <h:outputText value="#{swkMsg.m_Col_postTotal}:" />
+                     
+                         <h:inputText title="#{swkMsg.m_Col_postTotal}"  value="#{workShopAll.swkPostTotal}" size="20"   readonly="#{workShopAll.stateView or workShopAll.stateDelete}" />
+                                 
+                        
+                        
+                         #{swkMsg.m_Col_dlvTotal}:
+                         <h:inputText label="#{swkMsg.m_Col_dlvTotal}" value="#{workShopAll.swkDlvTotal}" size="20" readonly="#{workShopAll.stateView or workShopAll.stateDelete}">
+                        </h:inputText> 
+                         
+                         
+                    
+                        #{swkMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getWorkshopStatusName(workShopAll.swkStatus)}" size="10" readonly="true" />
+                       
+                        
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    <h:inputHidden id="pageState" value="#{workShopAll.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{workShopAll.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{workShopAll.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{workShopAll.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{workShopAll.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{workShopAll.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+

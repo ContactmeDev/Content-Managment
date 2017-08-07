@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+             
+                <ui:composition>
+                    <div class="top">
+                        <h:panelGrid columns="1" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images"  name="cme_logo.jpg" style="border: 0px;"/>
+
+                            <h:panelGrid columns="6"  dir="#{localChanger.direction}" bgcolor="#ece3a5">
+                                <h:panelGroup>
+                                    <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{msgs.m_Lab_headerWelcomeUserName}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{UserMastManagedBean.user.usrName}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: oblique; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{msgs.m_Lab_headerUserCompany}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: italic; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{UserMastManagedBean.user.usrCompany}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: oblique; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{msgs.m_Lab_headerUserRights}" rendered="#{UserMastManagedBean.login >= 1 }" style="color:navy; font-style: italic; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{UserMastManagedBean.user.usrType}" rendered="#{UserMastManagedBean.login >= 1 }" style="color:navy; font-style: oblique; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{msgs.m_Lab_headerLoginDateTime}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: italic; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{UserMastManagedBean.user.usrLastLogin}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: oblique; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px">
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                    </h:outputLabel>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 2px; margin-right: 2px"/>
+                                    <h:outputLabel value="#{msgs.m_Lab_headerLoginIPadd}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: italic; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                    <h:outputLabel value="#{UserMastManagedBean.clientIDAdd}" rendered="#{UserMastManagedBean.login >= 1}" style="color:navy; font-style: oblique; font-size: 1em; font-family: monospace; margin-left: 1px; margin-right: 1px"/>
+                                </h:panelGroup>
+                                
+                                <h:form>
+
+                                    <h:panelGroup>
+                                        <h:outputLabel value="|" rendered="#{UserMastManagedBean.login >= 1}" style="color:black; font-size: 1em; font-family: monospace; margin-left: 5px; margin-right: 5px"/>
+                                        <h:commandLink action="#{UserMastManagedBean.doLogout()}" rendered="#{UserMastManagedBean.login >= 1}">
+                                            <h:graphicImage library="images" name="logout.jpg" style="border: 0px; margin-right: 1em;" rendered="#{UserMastManagedBean.login >= 1}"/>            
+                                        </h:commandLink>
+                                    </h:panelGroup>
+                                    
+                                </h:form>
+
+
+                            </h:panelGrid>
+                        </h:panelGrid>
+
+                    </div>
+                </ui:composition>
+             
+    </h:body>
+</html>
+

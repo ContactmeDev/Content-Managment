@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+<h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{servTypeMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+            
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{servTypeMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{servType.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{servTypeMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:dataTable value="#{servType.serviceTypeList}" var="serv" id="servList" rows="10" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            binding="#{table}"
+                                            rowKeyVar="rowCount"
+                                            iterationStatusVar="it"> 
+                                <rich:column >
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+
+                                <rich:column  sortBy="#{serv.servType.srtCode} " sortOrder="#{servType.codeOrder}" >
+                                    <f:facet name="header">
+                                        <a4j:commandLink value="#{servTypeMsg.m_Col_Code}" render="servList" action="#{servType.sortByCode()}"  type="custom" /></f:facet>
+                                    <h:outputText value="#{serv.servType.srtCode}"/>
+                                    
+                                </rich:column>
+
+                                <rich:column sortBy="#{serv.servType.srtName} " sortOrder="#{servType.nameOrder}" >
+                                    <f:facet name="header">
+                                        <a4j:commandLink value="#{servTypeMsg.m_Col_Name_EN}" render="servList" action="#{servType.sortByName()}"  type="custom" /> </f:facet>
+                                    <h:outputText value="#{serv.servType.srtName}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{servTypeMsg.m_Col_Name_AR} </f:facet>
+                                    <h:outputText value="#{serv.servType.srtNameAr}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{servTypeMsg.m_Col_AddDate} </f:facet>
+                                    <h:outputText value="#{serv.servType.srtAddDate}"/>
+                                </rich:column>
+                            
+                              
+                                <rich:column>
+                                    <f:facet name="header"> #{servTypeMsg.m_Col_Status} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getServiceTypeStatusName(serv.servType.srtStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{servType.viewRecord(serv.servType)}" id="viewButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{servType.editRecord(serv.servType)}" id="editButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{servType.deleteRecord(serv.servType)}"  id="deleteButton" onclick="#{serv.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                           
+                                
+                               <!--<f:facet name="footer">
+                                   <rich:dataScroller for="servList" maxPages="5" rendered="#{table.rowCount gt '10'}" />
+                               </f:facet>-->
+                                <f:facet name="footer">
+                                    <rich:dataScroller maxPages="5" rendered="#{servType.servTypeCount > commonObjects.LIST_ROW_SIZE}"/>
+                                </f:facet>
+
+                        </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink action="#{servType.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{servType.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{servTypeMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{servType.stateAdd or servType.stateDelete or servType.stateEdit or servType.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{servType.listStateImage}" height="30px" width="30px"/>
+                            #{servTypeMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{servType.recordDetail}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{servTypeMsg.m_Col_Code}:" style="font-weight: bold"/>
+                        <h:panelGroup>
+                            <h:inputText id="srtCode" label="#{servTypeMsg.m_Col_Code}" value="#{servType.srtCode}" size="#{rec.srtCode.length()}" readonly="#{servType.stateEdit or servType.stateView or servType.stateDelete}" required="true" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                           <h:graphicImage id="lcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcToolTipImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{servTypeMsg.m_Hint_ServiceCode} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                        </h:panelGroup>
+                        
+                        
+                        <h:outputText value="#{servTypeMsg.m_Col_Name_EN}:" style="font-weight: bold"/>
+                        <h:inputText label="#{servTypeMsg.m_Col_Name_EN}" value="#{servType.srtNameEN}" size="40" readonly="#{servType.stateView or servType.stateDelete}" required="true" >
+                        </h:inputText>
+                        
+                         #{servTypeMsg.m_Col_Name_AR}:
+                        <h:panelGroup>
+                        <h:inputText  label="#{servTypeMsg.m_Col_Name_AR}" value="#{servType.srtNameAR}" size="40" readonly="#{servType.stateView or servType.stateDelete}">
+                        </h:inputText>
+                           <h:graphicImage  id="lcTolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                                <rich:tooltip mode="ajax" target="lcTolTipImg">
+                                    <h:panelGrid style="width:200px">
+                                       #{servTypeMsg.m_Hint_ServiceNameAr} 
+                                    </h:panelGrid> 
+                                    
+                                </rich:tooltip>
+                            
+                         </h:panelGroup>
+                      
+                         #{servTypeMsg.m_Col_AddUID}:
+                         
+                         <h:selectOneMenu label="#{servTypeMsg.m_Col_AddUID}"  value ="#{servType.srtAddUid}" tabindex="0" readonly="#{servType.stateView or servType.stateDelete}">
+                            <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}" />
+                         </h:selectOneMenu>
+                        
+                        <h:outputText value="#{servTypeMsg.m_Col_AddDate}:" />
+                     
+                        <h:inputText  title="#{servTypeMsg.m_Col_AddDate}"  value="#{servType.srtAddDate}" size="20"  label = "addDate" readonly="#{servType.stateView or servType.stateDelete}" >
+                                 <f:convertDateTime pattern = "dd-mm-yyyy" />
+                        </h:inputText>
+                        
+                         #{servTypeMsg.m_Col_UpdUID}:
+                        <h:selectOneMenu label="#{servTypeMsg.m_Col_UpdUID}"  value ="#{servType.srtUpdUid}" tabindex="0" readonly="#{servType.stateView or servType.stateDelete}">
+                            <f:selectItem itemValue="#{UserMastManagedBean.user.usrId}" itemLabel="#{UserMastManagedBean.user.usrName}" />
+                         </h:selectOneMenu>
+                         
+                            
+                         <h:outputText value="#{servTypeMsg.m_Col_UpdDate}:" />
+                        <rich:calendar value="#{servType.srtUpdDate}"  readonly="#{servType.stateView or servType.stateDelete}" 
+                        popup="true" 
+                        datePattern="dd/M/yy hh:mm a"
+                        locale="US"   
+                        showApplyButton="true"
+                        style="width:100px"
+                        showInput="true"
+                        showFooter="true"
+                        />
+                         
+                         
+                    
+                        #{servTypeMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getServiceTypeStatusName(servType.srtStatus)}" size="3" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    <h:inputHidden id="pageState" value="#{servType.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{servType.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{servType.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{servType.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{servType.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{servType.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+
