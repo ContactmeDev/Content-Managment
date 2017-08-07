@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    
+<application>
+    <message-bundle> com.cme.messages.devicePlatform</message-bundle>
+   <locale-config>
+    <default-locale>ar</default-locale> 
+     <supported-locale>en</supported-locale>
+   </locale-config>
+  
+
+<resource-bundle>
+<base-name>com.cme.messages.messages</base-name>
+<var>msgs</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.dashBoard</base-name>
+<var>dash</var> 
+</resource-bundle> 
+
+<resource-bundle>
+<base-name>com.cme.messages.menu</base-name>
+<var>mnuMsg</var> 
+</resource-bundle>
+<resource-bundle>
+<base-name>com.cme.messages.compProfile</base-name>
+<var>compPMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.langMast</base-name>
+<var>langMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.serviceCat</base-name>
+<var>catMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.operators</base-name>
+<var>oprMsg</var> 
+</resource-bundle>
+
+
+
+
+
+<resource-bundle>
+<base-name>com.cme.messages.versions</base-name>
+<var>verMsg</var> 
+</resource-bundle>
+
+
+<resource-bundle>
+<base-name>com.cme.messages.messageTrafficIn</base-name>
+<var>trafMsg</var> 
+</resource-bundle>
+
+<resource-bundle>
+<base-name>com.cme.messages.messageTrafficOut</base-name>
+<var>OutMsg</var> 
+</resource-bundle>
+
+</application>
+</faces-config>

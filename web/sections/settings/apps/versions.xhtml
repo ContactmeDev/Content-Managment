@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+<h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{verMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+         <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{verMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{versions.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{verMsg.m_Desc}
+                
+                <p></p>
+             
+            
+                    <div>
+                       
+    
+                        <rich:dataTable value="#{versions.versionsList}" var="ver" id="verList" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                          rows="#{commonObjects.LIST_ROW_SIZE}"  iterationStatusVar="it"  > 
+   
+
+                            
+                              <h:column>
+                        <f:facet name="header">
+                             N#
+                        </f:facet>
+                       <h:outputText value ="#{it.index + 1}"/>
+                    </h:column> 
+                            <rich:column  sortBy="#{ver.versions.verId}" sortOrder="#{versions.versionsOrder}"  sortType="custom" >
+                                <f:facet name="header">
+                                    <h:commandLink value="#{verMsg.m_Col_veId}"  action="#{versions.sortByVersions()}"  >
+                                         <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                </f:facet>
+                                <h:outputText value="#{ver.versions.verId}"/>
+                                    
+                                </rich:column>
+
+                            <rich:column sortOrder="#{versions.numbersOrder}" sortType="custom" sortBy="#{ver.versions.verNumb}">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{verMsg.m_Col_verNumb}" action="#{versions.sortByNumbers()}">
+                                             <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{ver.versions.verNumb}" />
+                                </rich:column>
+
+                            <rich:column sortOrder="#{versions.createdOrder}"  sortType="custom" sortBy="#{ver.versions.verCreated}">
+                                    <f:facet name="header">  
+                                        <a4j:commandLink value="#{verMsg.m_Col_verCreated}"    action="#{versions.sortByCreated()}" >
+                                             <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </a4j:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{ver.versions.verCreated}">
+                                       <f:convertDateTime pattern ="dd-MMM-yyyy "/> 
+                                    </h:outputText>
+                            </rich:column>`
+                            
+                            
+                            <rich:column sortOrder="#{versions.releasedOrder}" sortType="custom" sortBy="#{ver.versions.verReleased}">
+                                <f:facet name="header"> 
+                                    <h:commandLink value="#{verMsg.m_Col_verReleased}" action="#{versions.sortByReleased()}">
+                                         <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                    </h:commandLink>
+                            </f:facet>
+                                    
+                                <h:outputText value="#{ver.versions.verReleased}">                                
+                                   <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+
+                                </h:outputText>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header"> #{verMsg.m_Col_verSrvCode} </f:facet>
+                                <h:outputText value="#{ver.versions.verSrvCode}"/>
+                                </rich:column>
+                            <rich:column>
+                                <f:facet name="header"> #{verMsg.m_Col_verSsrvCode} </f:facet>
+                                <h:outputText value="#{ver.versions.verSsrvCode}"/>
+                                </rich:column>
+                            <rich:column>
+                                <f:facet name="header"> #{verMsg.m_Col_verSeq} </f:facet>
+                                <h:outputText value="#{ver.versions.verSeq}"/>
+                                </rich:column>
+                             <rich:column>
+                                 <f:facet name="header"> #{verMsg.m_Col_vertype} </f:facet>
+                                 <h:outputText value="#{ver.versions.verType}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{verMsg.m_Col_verStatus} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getAllStatus(ver.versions.verStatus)}"/>
+                                </rich:column>
+                           
+                            <rich:column sortOrder="#{versions.statusDateOrder}" sortType="custom"  sortBy="#{ver.versions.verStatusDate}">
+                                <f:facet name="header"> 
+                                    <h:commandLink value="#{verMsg.m_Col_verStatusDate}" action="#{versions.sortByStatus()}">
+                                         <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                    </h:commandLink>
+                                </f:facet>
+                                <h:outputText value="#{ver.versions.verStatusDate}">
+                                   <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+
+                                </h:outputText>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{versions.viewRecord(ver.versions)}" id="viewButton" onclick="#{ver.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster :Record :Master"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                 </h:commandLink>
+                                </rich:column>
+                                <rich:column>
+                                    <h:commandLink action="#{versionsDetail.viewDetails(ver.versions.verId)}" id="showButton" onclick="#{ver.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="column_zoom.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{versions.editRecord(ver.versions)}" id="editButton" onclick="#{ver.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{versions.deleteRecord(ver.versions)}"  id="deleteButton" onclick="#{ver.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                            
+                            <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{versions.versionsCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+                            
+                            </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust:  text-after-edge" id="addButton">
+                            <h:commandLink action="#{versions.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{versions.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{verMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{versions.stateAdd or versions.stateDelete or versions.stateEdit or versions.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{versions.recordStateImage}" height="30px" width="30px"/>
+                            #{verMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                    <rich:dataGrid value="#{versions.detailRecord}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{verMsg.m_Col_veId}:" style="font-weight: bold"/>
+                        <h:panelGroup>
+                            <h:inputText label="#{verMsg.m_Col_veId}" value="#{versions.verId}" size="#{rec.verId.length()}" readonly="#{versions.stateEdit or versions.stateView or versions.stateDelete}"    id="verCode" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                            <rich:tooltip showEvent="onclick" mode="ajax"  layout="block">
+                                <h:graphicImage library="images" name="chat_exclamation.png" height="10px" width="10px"/>
+                            </rich:tooltip>
+                            
+                        </h:panelGroup>
+                        
+                        
+                                               
+                        #{verMsg.m_Col_verCreated}:
+                        <h:inputText value="#{versions.verCreated}" size="30" readonly="#{versions.stateView or versions.stateDelete}">
+                             <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+                        </h:inputText>
+                        #{verMsg.m_Col_vedReleased}:
+                        <h:inputText value="#{versions.verReleased}" size="30" readonly="#{versions.stateView or versions.stateDelete}">
+                             <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+                        </h:inputText>
+                        
+                       
+                        #{verMsg.m_Col_verStatus}:
+                        <h:inputText value="#{dictionaryList.getAllStatus(versions.verStatus)}" size="30" readonly="true">
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_verStatusDate}:
+                        <h:inputText value="#{versions.verStatusDate}" size="30" label="Date" readonly="#{versions.stateView or versions.stateDelete}">
+                            <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_verNumb}:
+                        <h:inputText value="#{versions.verNumb}" size="10" readonly="#{versions.stateView or versions.stateDelete}">
+                        </h:inputText>
+                        
+                         #{verMsg.m_Col_verSrvCode}:
+                         <h:inputText value="#{versions.verSrvCode}" size="10" readonly="#{versions.stateView or versions.stateDelete}">
+                        </h:inputText>
+                         
+                          #{verMsg.m_Col_verSsrvCode}:
+                          <h:inputText value="#{versions.verSsrvCode}" size="10" readonly="#{versions.stateView or versions.stateDelete}">
+                        </h:inputText>
+                          
+                           #{verMsg.m_Col_verSeq}:
+                           <h:inputText value="#{versions.verSeq}" size="10" readonly="#{versions.stateView or versions.stateDelete}">
+                        </h:inputText>
+                           
+                            #{verMsg.m_Col_vertype}:
+                            <h:inputText value="#{versions.verType}" size="10" readonly="#{versions.stateView or versions.stateDelete}">
+                        </h:inputText>
+                            
+                          
+                        
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                      <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                      <h:inputHidden id="pageState" value="#{versions.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{versions.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{versions.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{versions.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust:  text-after-edge">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{versions.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{versions.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster :Master :Record"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+              <h:form id="Master" dir="#{localChanger.direction}">  
+                  <rich:panel header="#{verMsg.vm_Lab_PageTitle}" id="masterPanel" rendered="#{versionsDetail.stateView or versionsDetail.stateAdd or versionsDetail.stateDelete or versionsDetail.stateEdit}"  >
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{versionsDetail.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                     <p></p>
+                
+                    #{verMsg.m_Desc}
+                    <p></p>
+             
+            
+                    <div>
+                       
+
+                        <rich:dataTable value="#{versionsDetail.versionsDetailList}" var="det" id="detailList" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            rows="#{commonObjects.LIST_ROW_SIZE}"  iterationStatusVar="it"  > 
+   
+
+                            
+                              <h:column>
+                        <f:facet name="header">
+                             N#
+                        </f:facet>
+                              </h:column>
+                       <h:outputText value ="#{it.index + 1}"/> 
+                               
+                       <rich:column  sortBy="#{det.versionsDetail.vedId}"  sortOrder="#{versionsDetail.vedIDOrder}" sortType="custom">
+                                <f:facet name="header">
+                                    <h:commandLink value=" #{verMsg.m_Col_vedId}"  action="#{versionsDetail.sortByVedId()}">
+                                        <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                    </h:commandLink>
+                                </f:facet>
+                                <h:outputText value="#{det.versionsDetail.vedId}"/>
+                                    
+                                </rich:column>
+                       <rich:column sortOrder="#{versionsDetail.vedVerOrder}" sortBy="#{det.versionsDetail.vedVerId}"  sortType="custom">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{verMsg.m_Col_vedVerId}" action="#{versionsDetail.sortByVedVer()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{det.versionsDetail.vedVerId}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{verMsg.m_Col_vedCreated} </f:facet>
+                                    <h:outputText value="#{det.versionsDetail.vedCreated}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{verMsg.m_Col_vedReleased} </f:facet>
+                                    <h:outputText value="#{det.versionsDetail.vedReleased}"/>
+                                </rich:column>
+
+                              
+
+                       <rich:column sortOrder="#{versionsDetail.statusOrder}"  sortType="custom" sortBy="#{det.versionsDetail.vedStatus}"> 
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{verMsg.m_Col_vedStatus}" action="#{versionsDetail.sortByStatus()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{dictionaryList.getAllStatus(det.versionsDetail.vedStatus)}"/>
+                                </rich:column>
+                            
+                            
+                                <rich:column>
+                                    <f:facet name="header"> #{verMsg.m_Col_vedStatusDate} </f:facet>
+                                    <h:outputText value="#{det.versionsDetail.vedStatusDate}"/>
+                                </rich:column>
+                            
+                            
+                       <rich:column sortOrder="#{versionsDetail.sequenceOrder}" sortType="custom" sortBy="#{det.versionsDetail.vedSlno}">
+                                   <f:facet name="header"> 
+                                       <h:commandLink value="#{verMsg.m_Col_vedSeq}" action="#{versionsDetail.sortBySequence()}">
+                                           <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                       </h:commandLink>
+                                   </f:facet>
+                                   <h:outputText value="#{det.versionsDetail.vedSlno}"/>
+                                </rich:column>
+                            
+                            
+                                 <rich:column>
+                                 <f:facet name="header"> #{verMsg.m_Col_vedOsId} </f:facet>
+                                 <h:outputText value="#{det.versionsDetail.vedOsId}"/>
+                                </rich:column>
+
+                               
+
+                                <rich:column>
+                                    <h:commandLink action="#{versionsDetail.viewRecord(det.versionsDetail)}" id="viewButton" onclick="#{det.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{versionsDetail.editRecord(det.versionsDetail)}" id="editButton" onclick="#{det.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster :Master :Record"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{versionsDetail.deleteRecord(det.versionsDetail)}"  id="deleteButton" onclick="#{det.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":Record :Master :formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                       
+                       <f:facet name="footer">
+                           <rich:dataScroller maxPages="5" rendered="#{versionsDetail.detailsCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+
+                        </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust:  text-after-edge" id="addButton">
+                            <h:commandLink action="#{versionsDetail.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{versionsDetail.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":Record :Master :formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            
+            
+            
+            <p></p>
+            
+            <h:form id="Record" dir="#{localChanger.direction}">
+                <rich:panel header="#{verMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{versionsDetail.detailStateAdd or versionsDetail.detailStateDelete or versionsDetail.detailStateView or versionsDetail.detailStateEdit}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{versionsDetail.recordStateImage}" height="30px" width="30px"/>
+                            #{verMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                    <rich:dataGrid value="#{versionsDetail.detailsRecord}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{verMsg.m_Col_vedId}:" style="font-weight: bold"/>
+                        <h:inputText value="#{versionsDetail.vedId}"  id="vedCode" size="10" readonly="#{versionsDetail.stateView or versionsDetail.stateDelete}">
+                        </h:inputText>
+                    
+                                               
+                        #{verMsg.m_Col_vedVerId}:
+                        <h:selectOneMenu value="#{versionsDetail.vedVerId}" readonly="#{versionsDetail.stateView or versionsDetail.stateDelete}" >
+                            <f:selectItems value="#{commonObjects.DDVersionId}" var="verDD" itemLabel="#{verDD.verNumb}" itemValue="#{verDD.verId}"/>
+                        </h:selectOneMenu>
+                        
+                        #{verMsg.m_Col_vedCreated}:
+                        <h:inputText value="#{versionsDetail.vedCreated}" size="30" readonly="#{versionsDetail.stateView or versionsDetail.stateDelete}">
+                                                    <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_vedReleased}:
+                        <h:inputText value="#{versionsDetail.vedReleased}" size="10" readonly="true">
+                           <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_vedSeq}:
+                        <h:inputText value="#{versionsDetail.vedSlno}" size="10" readonly="true">
+                        </h:inputText>
+                        
+                         #{verMsg.m_Col_vedOsId}:
+                         <h:selectOneMenu value="#{versionsDetail.vedOsId}" readonly="#{versionsDetail.stateView or versionsDetail.stateDelete}">
+                             <f:selectItems value="#{commonObjects.DDOs}" var="DDos"  itemLabel="#{DDos.osName}" itemValue="#{DDos.osId}"/>
+                         </h:selectOneMenu>
+                        
+                        
+                        #{verMsg.m_Col_vedFlex01}:
+                        <h:inputText value="#{versionsDetail.vedFlex01}" size="30" >
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_vedFlex02}:
+                        <h:inputText value="#{versionsDetail.vedFlex02}" size="30" >
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_vedFlex03}:
+                        <h:inputText value="#{versionsDetail.vedFlex03}" size="30" >
+                        </h:inputText>
+                       
+                        #{verMsg.m_Col_vedStatus}:
+                        <h:inputText value="#{dictionaryList.getAllStatus(versionsDetail.vedStatus)}" size="10" readonly="true">
+                        </h:inputText>
+                        
+                        #{verMsg.m_Col_vedStatusDate}:
+                        <h:inputText value="#{versionsDetail.vedStatusDate}" size="30" readonly="#{versionsDetail.stateView or versions.stateDelete}">
+                          <f:convertDateTime pattern ="dd-MMM-yyyy"/> 
+                        </h:inputText>
+                        
+                   </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{versionsDetail.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{versionsDetail.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster :Master :Record"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+

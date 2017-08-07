@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <head>
+        <title>IGNORED</title>
+        
+    </head>
+<body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{langMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content">
+          <h:form id="master">  
+            <rich:panel header="#{langMsg.m_Lab_PageTitle}" id="masterPanel">
+           <!-- <P>
+                <h:panelGrid columns="2">
+                    <h:graphicImage library="images" name="#{language.listStateImage}" height="30px" width="30px"/>
+                    #{langMsg.m_Lab_PageTitle}
+                </h:panelGrid>
+             
+            </P>
+            
+            
+
+            
+                
+                    <div>
+                       
+
+                            <rich:dataTable value="#{language.allLanguages}" var="lang" id="langList" rows="10" onrowmouseover="this.style.backgroundColor='#E6E8FA'" onrowmouseout="this.style.backgroundColor='#FFFFFF'">
+                                <rich:column >
+
+                                    <h:outputText value="#{language.allLanguages.rowIndex}"/>
+                                </rich:column>
+
+                                <rich:column >
+                                    <f:facet name="header"> #{langMsg.m_Col_Code} </f:facet>
+                                    <h:outputText value="#{lang.lanCode}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_Name_EN} </f:facet>
+                                    <h:outputText value="#{lang.lanNameEn}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_Name_AR} </f:facet>
+                                    <h:outputText value="#{lang.lanNameAr}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_ChrPage} </f:facet>
+                                    <h:outputText value="#{lang.lanChrPerPage}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_DataCode} </f:facet>
+                                    <h:outputText value="#{lang.lanDatacode}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{langMsg.m_Col_Status} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getLanguageStatusName(lang.lanStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <a4j:commandLink action="#{language.editRecord(lang)}" id="editButton">
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </a4j:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <a4j:commandLink action="#{language.deleteRecord(lang)}"  id="deleteButton">
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </a4j:commandLink>
+                                </rich:column>
+
+                        </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink actionListener="#{language.addRecord()}" >
+                                <f:ajax execute="@this" event="click" />
+                               <h:graphicImage library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+
+                           <a4j:commandLink action="#{localChanger.arabicAction()}" id="refreshListButton">
+                               <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div> -->
+           
+           <h:commandLink actionListener="#{language.addRecord()}" >
+                                <f:ajax execute="@this" event="click" />
+                               <h:graphicImage library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                
+                </rich:panel>
+            </h:form>
+            <p></p>
+            <h:form id="formRecord">
+            <rich:panel header="#{langMsg.m_Lab_RecordSectionHeader}" id="recordPanel" binding="#{language.recordPanel}" rendered="#{not language.stateNone}">
+                
+                <!--
+                    <P>
+                        <h:panelGrid columns="2">
+                            <h:graphicImage library="images" name="#{language.recordStateImage}" height="30px" width="30px"/>
+                            #{langMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{language.recordDetail}" var="rec" id="detail" columns="1" elements="1">
+                    <h:panelGrid columns="2">
+                        #{langMsg.m_Col_Code}:
+                        <h:inputText value="#{rec.lanCode}" size="#{rec.lanCode.length()}">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_Name_EN}:
+                        <h:inputText value="#{rec.lanNameEn}" size="100">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_Name_AR}:
+                        <h:inputText value="#{rec.lanNameAr}" size="100">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_ChrPage}:
+                        <h:inputText value="#{rec.lanChrPerPage}" size="3">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_DataCode}:
+                        <h:inputText value="#{rec.lanDatacode}" size="10">
+                        </h:inputText>
+                        
+                        #{langMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getLanguageStatusName(rec.lanStatus)}" size="10" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+                </rich:dataGrid>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <a4j:commandLink action="#{language.saveRecord(rec)}"  id="saveButton" onclick="if (#{language.stateView})alert(#{msgs.m_AlertNothing}) else if(#{language.stateDelete}) return confirm(#{msgs.m_Alert_DeleteFlag}) else return confirm(#{msgs.m_Alert_SaveChanges})">
+                                <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </a4j:commandLink>
+
+                           <a4j:commandLink action="#{localChanger.arabicAction()}"  id="refreshButton">
+                               <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </a4j:commandLink>
+                        </h:panelGrid>
+                       </P> -->
+                </rich:panel>
+                </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</body> </html>
+

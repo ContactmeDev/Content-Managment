@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"
+       xmlns:fn="http://java.sun.com/jsp/jstl/functions"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+   
+    <h:body>
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <f:loadBundle basename="com.cme.messages.devicePlatform" var="platMsg"/>
+        <ui:define name="windowTitle">  #{platMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+          
+         <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{platMsg.m_Lab_PageTitle}" id="masterPanel">
+                
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{platform.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>   
+                </h:panelGrid>
+              
+             N# of Records:
+                   <h:selectOneMenu value="#{platform.rowCount}"  >
+                       <f:selectItems value="#{commonObjects.integerList}"/>
+                       <a4j:ajax event="change" execute="@this" render=":formRecord :formMaster"/>
+                    </h:selectOneMenu>            
+                    
+                
+                <p></p>
+                
+                    #{platMsg.m_Desc}
+                
+                <p></p>
+             
+            <!--  <h:form>
+                      <h:panelGrid columns="2" >
+                        <h:outputText value="number of records:" />
+                        <h:inputText value="#{platform.rowCount}" /
+                        <h:commandButton value="submit"      >
+                            <a4j:ajax execute="@form" render=":formRecord :formMaster" />
+                        </h:commandButton>
+                        </h:panelGrid>
+             </h:form>-->
+                    <div>
+                       
+    
+                        <rich:dataTable  value="#{platform.platformList}" var="plat" id="platList"  
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            rows="#{commonObjects.LIST_ROW_SIZE}"  iterationStatusVar="it"> 
+   
+                            
+                     <rich:column  >
+                       
+                       <h:outputText value ="#{it.index + 1}"/>
+                    </rich:column> 
+
+                            <rich:column  sortBy="#{platform.osId}"  sortOrder="#{platform.osIdOrder}"  sortType="custom">
+                                <f:facet name="header"> 
+                                    <h:commandLink value="#{platMsg.m_Col_osID}" action="#{platform.sortByOsId()}">
+                                         <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                     </h:commandLink> 
+                                   
+                                </f:facet>
+                                <h:outputText value="#{plat.platform.osId}"/>
+                                    
+                                </rich:column>
+                            
+                                                         
+
+                            <rich:column    sortOrder="#{platform.osNameOrder}"   >
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{platMsg.m_Col_osName}" action="#{platform.sortByOsName()}">
+                                     <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                
+                                    
+                                    <h:outputText value="#{plat.platform.osName}"/>
+                                </rich:column>
+
+                            <rich:column sortOrder="#{platform.osVersionOrder}" sortType="custom">
+                                <f:facet name="header"> <h:commandLink value="#{platMsg.m_Col_osVersion}" action="#{platform.sortByOsVersion()}">
+                                          <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                   </h:commandLink>
+                                     </f:facet>
+                                    <h:outputText value="#{plat.platform.osVersion}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{platMsg.m_Col_osStatus} </f:facet>
+                                    <h:outputText value="#{dictionaryList.getAllStatus(plat.platform.osStatus)}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{platform.viewRecord(plat.platform)}" id="viewButton" onclick="#{plat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                                <rich:column>
+                                    <h:commandLink action="#{platform.editRecord(plat.platform)}" id="editButton" onclick="#{plat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{platform.deleteRecord(plat.platform)}"  id="deleteButton" onclick="#{plat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                            
+                            <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{platform.platformsCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+
+                        </rich:dataTable>
+                        
+
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink action="#{platform.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{platform.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+            
+            <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{platMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{platform.stateAdd or platform.stateDelete or platform.stateEdit or platform.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{platform.recordStateImage}" height="30px" width="30px"/>
+                            #{platMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                <rich:dataGrid value="#{platform.detailRecord}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{platMsg.m_Col_osID}:" style="font-weight: bold"/>
+                        
+                            <h:inputText  id="OsID" label="#{platMsg.m_Col_osID}" value="#{platform.osId}" size="#{rec.osId.length()}" readonly="#{platform.stateEdit or platform.stateView or platform.stateDelete}" 
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                         
+                       
+                        
+                        
+                        <h:outputText value="#{platMsg.m_Col_osName}:" style="font-weight: bold"/>
+                        <h:inputText label="#{platMsg.m_Col_osName}" value="#{platform.osName}" size="30" readonly="#{platform.stateView or platform.stateDelete}" required="true" >
+                        </h:inputText>
+                        
+                        #{platMsg.m_Col_osVersion}:
+                        <h:inputText value="#{platform.osVersion}" size="30" readonly="#{platform.stateView or platform.stateDelete}">
+                        </h:inputText>
+                        
+                       
+                        #{platMsg.m_Col_osStatus}:
+                        <h:inputText value="#{dictionaryList.getAllStatus(platform.osStatus)}" size="10" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{platform.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{platform.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+</h:body> </html>
+

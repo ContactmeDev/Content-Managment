@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+<h:body>
+     
+    <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{trafMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+            <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>
+              <rich:panel header="#{trafMsg.m_Lab_PageTitle}" id="masterPanel">
+             
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{trafficIn.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                
+                    
+                      
+            
+           <rich:tabPanel switchType="client">
+           
+            
+             <p></p>
+                 
+    
+            <rich:tab header="Message In">
+                
+                   
+                 <h:form id="formMaster" dir="#{localChanger.direction}">
+                   
+                         <p></p>
+                
+                    #{trafMsg.m_Desc}
+                    
+                         <p></p>
+                          N# of Records:
+                       <h:selectOneMenu value="#{trafficIn.rowCount}"  >
+                       <f:selectItems value="#{commonObjects.integerList}"/>
+                       <a4j:ajax event="change" execute="@this" render=":formRecord :formMaster"/>
+                    </h:selectOneMenu>
+                       <p></p>
+                                     
+                       <rich:extendedDataTable  id="inTable"  value="#{trafficIn.inList}"  var="in" rows="#{commonObjects.LIST_ROW_SIZE}" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            iterationStatusVar="it"     style="height:300px; width:1120px;"    filterVar="filterValue"  
+                                            selection="#{trafficIn.selection}" > 
+                           <a4j:ajax execute="@form" event="selectionchange" listener="#{trafficIn.selectionListener()}" oncomplete="PF('dlg1').show();"
+                          render=":dialog"/>   
+                           <rich:column>
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+                          
+                           <rich:column        sortBy="#{in.trafficIn.minId}" >
+                                    <f:facet name="header">#{trafMsg.m_Col_Code} 
+                                         
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minId}"/>
+                           </rich:column>
+
+                           <rich:column sortBy="#{in.trafficIn.minSmsId}" 
+                                        filterValue="#{trafficIn.nameFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minSmsId, trafficIn.nameFilter)}">
+                                    <f:facet name="header">#{trafMsg.m_Col_MIN_SMS_ID} 
+                                      
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minSmsId}"/>
+                                </rich:column>
+
+      
+
+                           
+                           <rich:column sortBy="#{in.trafficIn.minSender}"  
+                                        filterValue="#{trafficIn.senderFilter}" 
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minSender, filterValue)}" >
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_SENDER}
+                                    </f:facet>
+                                    <h:outputText value="#{in.trafficIn.minSender}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minReceiver}" filterValue="#{trafficIn.receiverFilter}" 
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minReceiver, filterValue)}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_RECIEVER}
+                                       
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minReceiver}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minSendDatetime}" 
+                                        filterValue="#{trafficIn.sendFilter}" 
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minSendDatetime, filterValue)}"  >
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_SEND_DATE}
+                                      
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minSendDatetime}">
+                                   <f:convertDateTime pattern="dd-MMM-yyyy hh-mm-ss"/>
+                               </h:outputText>
+                                </rich:column>
+                           
+                           <rich:column    sortBy="#{in.trafficIn.minReceiveDatetime}" 
+                                           filter="#{trafficIn.receiveFilter}"
+                                           filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minReceiveDatetime, filterValue)}"
+                                            >
+
+                                         
+                                        <f:facet name="header">
+                                            #{trafMsg.m_Col_MIN_RECIEVE_DATE}
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minReceiveDatetime}">
+                                   <f:convertDateTime pattern="dd-MMM-yyyy hh-mm-ss"/>
+                               </h:outputText>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minMsg}"  >
+                                    <f:facet name="header">#{trafMsg.m_Col_MIN_MSG}</f:facet> 
+                                                                           
+                                    <h:outputText value="#{in.trafficIn.minMsg}"   >
+                                 <!--  <rich:componentControl target="popup" operation="show"  event="click" />-->
+                                 
+                               </h:outputText>
+                 <rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false"  >
+                        <f:facet name="header">
+                            <h:outputText value="Messages" />
+                        </f:facet>
+                         #{in.trafficIn.minMsg}
+                </rich:popupPanel>     
+                                </rich:column>
+                          
+                           <rich:column sortBy="#{in.trafficIn.minLanCode}" >
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_lANCODE}
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minLanCode}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minNumbPage}" >                                
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_NUMBPAGE}
+                                </f:facet>
+                               <h:outputText value="#{in.trafficIn.minNumbPage}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minStatus}" 
+                                        filterValue="#{trafficIn.statusFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minStatus, filterValue)}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_STATUS}
+                                      
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minStatus}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minSrvCode}" 
+                                        filterValue="#{trafficIn.srvFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minSrvCode, filterValue)}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_SRVCODE}</f:facet>
+                                                                         
+                               <h:outputText value="#{in.trafficIn.minSrvCode}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minSsrvCode}"   
+                                        filterValue="#{trafficIn.ssrvFilter}" 
+                                        filterExpression="#{fn:containsIgnoreCase(in.trafficIn.minSsrvCode, filterValue)}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_SSRVCODE} </f:facet>
+                                     <h:outputText value="#{in.trafficIn.minSsrvCode}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{in.trafficIn.minSrvRef}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_SRVREF}
+                                       
+                                    </f:facet>
+                               <h:outputText value="#{in.trafficIn.minSrvRef}"/>
+                                </rich:column>
+                           
+                           <rich:column>
+                               <h:commandLink action="#{trafficInDetail.viewDetails(in.trafficIn.minSmsId)}" id="showButton" onclick="#{in.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster "/>
+                                        <h:graphicImage library="images" name="column_zoom.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                                
+                            <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{trafficIn.messageInCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+
+                        </rich:extendedDataTable>
+                       
+                       <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButtons">                       
+                            <a4j:commandLink action="#{trafficIn.stateRefresh()}" id="refreshList">
+                                <f:ajax execute="@this"  id="addAjaxs" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+                        </h:panelGrid>
+                       </P>
+                  </h:form>
+                <a4j:outputPanel id="res">
+                           <rich:panel header="Selected Rows:" rendered="#{not empty trafficIn.selectionItems}">
+                                <rich:list type="unordered" value="#{trafficIn.selectionItems}" var="sel">
+                                    <h:outputText value="#{sel.trafficIn.minMsg}" />
+                                </rich:list>
+                            </rich:panel>
+                        </a4j:outputPanel>
+                
+                <p:dialog header="Messages" widgetVar="dlg1" minHeight="40"  id="dialog"  >
+                    <rich:list type="unordered" value="#{trafficIn.selectionItems}" var="sel">
+                        <h:outputText value="#{sel.trafficIn.minMsg} - #{sel.trafficIn.minSmsId}"/>
+                </rich:list>
+             </p:dialog>
+                 </rich:tab>
+           
+                      
+                
+                
+                
+              
+             
+             
+                      
+             <rich:tab header="Message Out" id="messageOut">
+                 
+                  <h:form id="formRecord" dir="#{localChanger.direction}">
+                       
+                         <p></p>
+                
+                    #{OutMsg.m_Desc}
+                    
+                         <p></p>
+                          N# of Records:
+                       <h:selectOneMenu value="#{trafficOut.rowCount}"  >
+                       <f:selectItems value="#{commonObjects.integerList}"/>
+                       <a4j:ajax event="change" execute="@this" render=":formRecord :formMaster"/>
+                    </h:selectOneMenu>
+                       <p></p>
+            
+                   <h:panelGrid style="align-content: center;" >
+                      
+                       <rich:extendedDataTable  id="outTable"  value="#{trafficOut.outList}" var="out" rows="#{commonObjects.LIST_ROW_SIZE}" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                            iterationStatusVar="it"   selectionMode="none" style="height:300px; width:1120px;"    frozenColumns="6"   filterVar="filterVal" > 
+                                <rich:column  >
+
+                                    <h:outputText value="#{it.index + 1}"/>
+                                </rich:column>
+                          
+                           <rich:column       sortBy="#{out.trafficOut.moutId}" 
+                                              filterValue="#{trafficOut.idFilter}"
+                                              filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutId  , filterVal)}">
+                                              
+                                    <f:facet name="header"> #{OutMsg.m_Col_Code}
+                                         
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutId}"/>
+                                    
+                                </rich:column>
+
+                           <rich:column sortBy="#{out.trafficOut.moutSmsId}" 
+                                        filterValue="#{trafficOut.smsIdFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSmsId  , filterVal)}">
+                                    <f:facet name="header"> #{OutMsg.m_Col_MIN_SMS_ID}
+                                        
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutSmsId}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutMinId}" 
+                                        filterValue="#{trafficOut.inIdFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutMinId  , filterVal)}">
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_MoutMinId}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutMinId}"/>
+                                </rich:column>
+
+                           <rich:column filterValue="#{trafficOut.senderFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSender  , filterVal)}">
+                                    <f:facet name="header">#{OutMsg.m_Col_MIN_SENDER}</f:facet>
+                               <h:outputText value="#{out.trafficOut.moutSender}"/>
+                                </rich:column>
+                           
+                           <rich:column filterValue="#{trafficOut.receiverFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutReceiver  , filterVal)}">
+                                     <f:facet name="header">#{OutMsg.m_Col_MIN_RECIEVER}</f:facet>
+                                     <h:outputText value="#{out.trafficOut.moutReceiver}"/>
+                                </rich:column>
+                           
+                           
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutSendDatetime}" 
+                                        filterValue="#{trafficOut.sendFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSendDatetime  , filterVal)}">
+                                    <f:facet name="header">#{OutMsg.m_Col_MIN_SEND_DATE} 
+                                        
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutSendDatetime}">
+                                   <f:convertDateTime pattern="dd-MMM-yy hh-mm-ss"/>
+                               </h:outputText>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutReceiveDatetime}" 
+                                        filterValue="#{trafficOut.receiveFilter}">
+                                    <f:facet name="header">#{OutMsg.m_Col_MIN_RECIEVE_DATE} 
+                                        
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutReceiveDatetime}">
+                                   <f:convertDateTime pattern="dd-MMM-yy hh-mm-ss"/>
+                               </h:outputText>
+                                </rich:column>
+                           
+                           <rich:column>
+                                    <f:facet name="header"> #{OutMsg.m_Col_MIN_MSG}
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutMsg}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutLanCode}">
+                                    <f:facet name="header"> #{OutMsg.m_Col_MIN_lANCODE}
+                                        
+                                    </f:facet>
+                               <h:outputText value="#{out.trafficOut.moutLanCode}"/>
+                                </rich:column>
+                           
+                           <rich:column>
+                                    <f:facet name="header"> #{OutMsg.m_Col_MIN_NUMBPAGE}</f:facet>
+                               <h:outputText value="#{out.trafficOut.moutNumbPage}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutStatus}" 
+                                        filterValue="#{trafficOut.statusFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutStatus  , filterVal)}">
+                                    <f:facet name="header"> #{trafMsg.m_Col_MIN_STATUS} </f:facet>
+                                        
+                                  <h:outputText value="#{out.trafficOut.moutStatus}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutSrvCode}"
+                                        filterValue="#{trafficOut.srvFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSrvCode  , filterVal)}">
+                                    <f:facet name="header">#{OutMsg.m_Col_MIN_SRVCODE}</f:facet> 
+                                                                           
+                               <h:outputText value="#{out.trafficOut.moutSrvCode}"/>
+                                </rich:column>
+                           
+                           <rich:column sortBy="#{out.trafficOut.moutSsrvCode}" 
+                                        filterValue="#{trafficOut.ssrvFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSsrvCode  , filterVal)}">
+                                    <f:facet name="header"> #{OutMsg.m_Col_MIN_SSRVCODE}  </f:facet>
+                                     <h:outputText value="#{out.trafficOut.moutSsrvCode}"/>
+                                </rich:column>
+                           
+                                <rich:column>
+                                    <f:facet name="header">#{OutMsg.m_Col_MIN_SRVREF}</f:facet>
+                                     <h:outputText value="#{out.trafficOut.moutSrvRef}"/>
+                                </rich:column>
+                           
+                           <rich:column filterValue="#{trafficOut.retryFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutRetryLast  , filterVal)}">
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_LastRetry}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutRetryLast}"/>
+                                </rich:column>
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_FinalStatus}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutFinalStatus}"/>
+                                </rich:column>
+                           
+                           <rich:column filterValue="#{trafficOut.deliveredFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutDelivered  , filterVal)}">
+                               <f:facet name="header">#{OutMsg.m_Col_MIN_Delieverd}</f:facet>
+                               <h:outputText value="#{out.trafficOut.moutDelivered}"/>
+                                </rich:column>
+                           
+                           
+                           <rich:column  filterValue="#{trafficOut.delivFilter}"
+                                         filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutDelivDate  , filterVal)}"> 
+                               <f:facet name="header">#{OutMsg.m_Col_MIN_DeliverDate}</f:facet>
+                               <h:outputText value="#{out.trafficOut.moutDelivDate}">
+                                   <f:convertDateTime pattern="dd-MMM-yy hh-mm-ss"/>
+                               </h:outputText>
+                               
+                               
+                                </rich:column>
+                           
+                           <rich:column>
+                               <f:facet name="header">#{OutMsg.m_Col_MIN_NumbRetry}</f:facet>
+                               <h:outputText value="#{out.trafficOut.moutNumbRetry}"/>
+                                </rich:column>
+                           
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_DoneDate}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutDoneDate}">
+                                    <f:convertDateTime pattern="dd-MMM-yy hh-mm-ss"/>
+                               </h:outputText>
+                                </rich:column>
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_NoDeliverd}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutNoDelivrd}"/>
+                                </rich:column>
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_Submitted}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutNoSubmitted}"/>
+                                </rich:column>
+                           <rich:column filterValue="#{trafficOut.swkIdFilter}"
+                                        filterExpression="#{fn:containsIgnoreCase(out.trafficOut.moutSwkId  , filterVal)}">
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_SWKID}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutSwkId}"/>
+                                </rich:column>
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_Flex01}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutFlex01}"/>
+                                </rich:column>
+                           
+                            <rich:column>
+                                <f:facet name="header">#{OutMsg.m_Col_MIN_Flex02}</f:facet>
+                                <h:outputText value="#{out.trafficOut.moutFlex02}"/>
+                                </rich:column>
+                           
+                           <rich:column>
+                               <h:commandLink action="#{trafficOutDetail.viewDetails(out.trafficOut.moutId)}" id="showButton" onclick="#{out.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster "/>
+                                        <h:graphicImage library="images" name="column_zoom.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                           
+                          
+                                
+                            <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{trafficOut.messageOutCount > commonObjects.LIST_ROW_SIZE}" />
+                            </f:facet>
+
+                        </rich:extendedDataTable>
+                            
+                        </h:panelGrid>
+                 </h:form>
+             </rich:tab>
+          
+                
+    </rich:tabPanel>
+                 </rich:panel>
+    
+               </ui:define> 
+    </ui:composition>  
+                        
+                 
+             
+            
+</h:body>
+                    
+</html>
+

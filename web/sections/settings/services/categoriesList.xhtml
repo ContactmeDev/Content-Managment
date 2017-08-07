@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+          
+      xmlns:a4j="http://richfaces.org/a4j"> 
+    <h:head>
+        <title>IGNORED</title>
+        
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/masterLayout.xhtml"> 
+        <ui:define name="windowTitle">  #{catMsg.m_Lab_PageTitle} </ui:define>
+        <ui:define name="content" id="content">
+           <h:outputScript library="javascript" name="saveConfirm.js" target="head"/>  
+
+            <h:form id="formMaster" dir="#{localChanger.direction}">  
+            <rich:panel header="#{catMsg.m_Lab_PageTitle}" id="masterPanel">
+           
+                
+                <h:panelGrid columns="2" id="pageTitlePanel" >
+                    <h:graphicImage library="images" name="#{category.listStateImage}" height="30px" width="30px"/>
+                    <h:outputText value="#{menueReader.menuTreeName}" style="font-weight: bolder"/>
+                </h:panelGrid>
+                
+                <p></p>
+                
+                    #{catMsg.m_Desc}
+                
+                <p></p>
+                
+                 <div>
+                       
+
+                     <rich:dataTable value="#{category.categoriesList}" var="cat" id="catList" 
+                                            onrowmouseover="this.style.backgroundColor='#e9e9e9'" 
+                                            onrowmouseout="this.style.backgroundColor='#FFFFFF'"
+                                               rows="#{commonObjects.LIST_ROW_SIZE}"  iterationStatusVar="it"> 
+   
+                            
+                     <rich:column>
+                       
+                       <h:outputText value ="#{it.index + 1}"/>
+                    </rich:column> > 
+                  
+
+                    <rich:column    sortBy="#{cat.category.scatCode}" sortOrder="#{category.scatCodeOrder}" sortType="custom" >
+                            <f:facet name="header"> 
+                                  <h:commandLink value="#{catMsg.m_Col_Code}" action="#{category.sortByScatCode()}">
+                                      <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                      </h:commandLink>
+                            </f:facet>
+                                    <h:outputText value="#{cat.category.scatCode}"/>
+                                    
+                     </rich:column>
+
+                    <rich:column sortOrder="#{category.scatNameOrder}" sortType="custom" sortBy="#{cat.category.scatNameEn}">
+                                    <f:facet name="header">
+                                        <h:commandLink value="#{catMsg.m_Col_Name_EN}"  action="#{category.sortByScatName()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                            </h:commandLink>
+                                    </f:facet>
+                        
+                                    <h:outputText value="#{cat.category.scatNameEn}"/>
+                                </rich:column>
+
+                    <rich:column sortOrder="#{category.scatNameArOrder}" sortType="custom" sortBy="#{cat.category.scatNameAr}">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{catMsg.m_Col_Name_AR}" action="#{category.sortByNameAr()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                            </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{cat.category.scatNameAr}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{catMsg.m_Col_CatDesc} </f:facet>
+                                    <h:outputText value="#{cat.category.scatDesc}"/>
+                                </rich:column>
+
+                                <rich:column>
+                                    <f:facet name="header"> #{catMsg.m_Col_CatPriority} </f:facet>
+                                    <h:outputText value="#{cat.category.scatPriority}"/>
+                                </rich:column>
+
+                    <rich:column  sortOrder="#{category.scatStatusOrder}" sortType="custom" sortBy="#{cat.category.scatStatus}">
+                                    <f:facet name="header"> 
+                                        <h:commandLink value="#{catMsg.m_Col_Status}" action="#{category.sortByScatStatus()}">
+                                            <f:ajax execute="@this"  render=":formRecord :formMaster"/>
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <h:outputText value="#{dictionaryList.getAllStatus(cat.category.scatStatus)}"/>
+                                </rich:column>
+                    
+                               <rich:column>
+                                   <h:commandLink action="#{category.viewRecord( cat.category)}" id="viewButton" onclick="#{cat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="viewAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="preview.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                    
+                                <rich:column>
+                                    <h:commandLink action="#{category.editRecord(cat.category)}" id="editButton" onclick="#{cat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="editAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="edit.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+
+                                <rich:column>
+                                    <h:commandLink action="#{category.deleteRecord(cat.category)}"  id="deleteButton" onclick="#{cat.rowSelected()}">
+                                        <f:ajax execute="@form"  id="delAjax" render=":formRecord :formMaster"/>
+                                        <h:graphicImage library="images" name="trash_can.png" style="border: 0px; margin-right: 1em;" height="20px" width="20px"/>            
+                                    </h:commandLink>
+                                </rich:column>
+                           <f:facet name="footer">
+                                <rich:dataScroller maxPages="5" rendered="#{category.categoryCount > commonObjects.LIST_ROW_SIZE}"/>
+                            </f:facet>
+
+                        </rich:dataTable>
+                     
+                      <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right" id="addButton">
+                            <h:commandLink action="#{category.addRecord()}" id="addComLink" >
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                    <h:graphicImage id="addImg" library="images" name="add.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </h:commandLink>
+
+                            <a4j:commandLink action="#{category.stateRefresh()}" id="refreshListButton">
+                                <f:ajax execute="@this"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                            </a4j:commandLink>
+
+                           
+                        </h:panelGrid>
+                       </P>
+
+                    </div>
+           
+           
+                
+                
+            </rich:panel>
+          </h:form>
+            <p></p>
+              
+            
+              <h:form id="formRecord" dir="#{localChanger.direction}">
+                <rich:panel header="#{catMsg.m_Lab_RecordSectionHeader}" id="recordPanel" rendered="#{category.stateAdd or category.stateDelete or category.stateEdit or category.stateView}">
+                    <P>
+                        <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                            <h:graphicImage library="images" name="#{category.recordStateImage}" height="30px" width="30px"/>
+                            #{catMsg.m_Lab_RecordSectionHeader}
+                        </h:panelGrid>
+
+                    </P>
+                    <rich:dataGrid value="#{category.detailRecord}" var="rec" id="detail" columns="1" elements="1"> 
+                    <h:panelGrid columns="2" dir="#{localChanger.direction}">
+                        <h:outputText value="#{catMsg.m_Col_Code}:" style="font-weight: bold"/>
+                       
+                            <h:inputText label="#{catMsg.m_Col_Code}" value="#{category.scatCode}" size="#{rec.scatCode.length()}" readonly="#{category.stateEdit or category.stateView or category.stateDelete}" id="catCode"
+                                     style="text-transform: uppercase" >
+                            </h:inputText>
+
+                        
+                        
+                        
+                        <h:outputText value="#{catMsg.m_Col_Name_EN}:" style="font-weight: bold"/>
+                        <h:inputText label="#{catMsg.m_Col_Name_EN}" value="#{category.scatNameEn}" size="30" readonly="#{category.stateView or category.stateDelete}" required="true" >
+                        </h:inputText>
+                        
+                        #{catMsg.m_Col_Name_AR}:
+                        <h:inputText value="#{category.scatNameAr}" size="30" readonly="#{category.stateView or category.stateDelete}">
+                        </h:inputText>
+                        
+                        #{catMsg.m_Col_CatDesc}:
+                        <h:inputText label="#{catMsg.m_Col_CatDesc}" value="#{category.scatDesc}" size="30" readonly="#{category.stateView or category.stateDelete}">
+                        </h:inputText>
+                        
+                                        
+                        #{catMsg.m_Col_CatPriority}:
+                         <h:panelGroup>
+                        <h:inputText value="#{dictionaryList.getCatPriority(category.scatPriority)}" size="10" readonly="true">
+                        </h:inputText>
+                         <h:graphicImage id="lcToolTipImg" library="images" name="chat_exclamation.png" height="15px" width="15px"/>
+                            <rich:tooltip mode="ajax" target="lcToolTipImg">
+                                <h:panelGrid style="width:200px">
+                                    #{catMsg.m_Hint_ScatPriority}
+                                </h:panelGrid>
+                            </rich:tooltip>
+                         </h:panelGroup>
+                        
+                        #{catMsg.m_Col_Status}:
+                        <h:inputText value="#{dictionaryList.getCategoryStatusName(category.scatStatus)}" size="10" readonly="true">
+                        </h:inputText>
+                    </h:panelGrid>
+               </rich:dataGrid> 
+                    
+                    
+                    <h:messages layout="table" style="font-style: italic; color: red;"/>
+                        <h:inputHidden id="pageState" value="#{category.currentState}"/>
+                    <h:inputHidden id="viewMsg" value="#{category.viewMessage}"/>
+                    <h:inputHidden id="deleteMsg" value="#{category.deleteMessage}"/>
+                    <h:inputHidden id="editMsg" value="#{category.editMessage}"/>
+                    
+                    <P>
+                        <h:panelGrid columns="3" style="alignment-adjust: right">
+                           
+                            <h:commandLink id="saveButton" type="submit" action="#{category.saveRecord()}" onclick="return saveConfirm(this.form)">
+                               <h:graphicImage library="images" name="diskette.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px" />            
+                           </h:commandLink>
+
+                            <h:commandLink action="#{category.stateRefresh()}"  id="refreshButton">
+                                <f:ajax execute="@form"  id="addAjax" render=":formRecord :formMaster"/>
+                                <h:graphicImage library="images" name="refresh.png" style="border: 0px; margin-right: 1em;" height="25px" width="30px"/>            
+                           </h:commandLink>
+                        </h:panelGrid>
+                       </P>
+                
+                
+                </rich:panel>
+            </h:form>
+            
+                
+    
+
+        </ui:define> 
+    </ui:composition>
+    </h:body>
+</html>
+

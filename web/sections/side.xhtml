@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <head><title>IGNORED</title></head>
+<body>
+<ui:composition> 
+    
+    <h:outputStylesheet>
+        .cols {
+        vertical-align: top;
+        
+        }
+    </h:outputStylesheet> 
+    <div>
+    <h:form id="menuForm"> 
+       
+        <h:panelGrid columns="1" columnClasses="cols" width="50" dir="#{localChanger.direction}">
+            <rich:panelMenu style="width:200px" itemMode="server" groupMode="ajax" groupExpandedLeftIcon="triangleUp"
+                groupCollapsedLeftIcon="triangleDown" topGroupExpandedRightIcon="chevronUp"
+                topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc" itemChangeListener="#{menueReader.selectMenuItem}" activeItem="menueReader.menuSelected}">
+              
+               <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m1000',localChanger.direction)}"  >
+                   <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1001',localChanger.direction)}" name="m1001" action="#{menueReader.getXMLValue('m1001', 'MIT_FILE_NAME')}"/> 
+                   
+                   <rich:panelMenuItem label ="#{menueReader.getMenuTitle('m1002',localChanger.direction)}" name="m1002" action="#{menueReader.getXMLValue('m1002', 'MIT_FILE_NAME')}"/> 
+                   <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1003',localChanger.direction)}" name="m1003" action="#{menueReader.getXMLValue('m1003', 'MIT_FILE_NAME')}"  />
+                   <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1004',localChanger.direction)}" name="m1004" action="#{menueReader.getXMLValue('m1004', 'MIT_FILE_NAME')}"  />
+                   <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m1005',localChanger.direction)}" >
+                       <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1006',localChanger.direction)}" name="m1006" action="#{menueReader.getXMLValue('m1006', 'MIT_FILE_NAME')}"  />
+                       <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1007',localChanger.direction)}" name="m1007" action="#{menueReader.getXMLValue('m1007', 'MIT_FILE_NAME')}"  />
+                       <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1008',localChanger.direction)}" name="m1008" action="#{menueReader.getXMLValue('m1008', 'MIT_FILE_NAME')}"  />
+                       <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1015',localChanger.direction)}" name="m1015" action="#{menueReader.getXMLValue('m1015', 'MIT_FILE_NAME')}"  />
+                       <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m1009',localChanger.direction)}" >
+                       <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1010',localChanger.direction)}" name="m1010" action="#{menueReader.getXMLValue('m1010', 'MIT_FILE_NAME')}"  />
+                              <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1011',localChanger.direction)}" name="m1011" action="#{menueReader.getXMLValue('m1011', 'MIT_FILE_NAME')}"  />
+                              <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1012',localChanger.direction)}" name="m1012" action="#{menueReader.getXMLValue('m1012', 'MIT_FILE_NAME')}"  />
+                       </rich:panelMenuGroup>
+                       <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m1013',localChanger.direction)}" >
+                              <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1014',localChanger.direction)}" name="m1014" action="#{menueReader.getXMLValue('m1014', 'MIT_FILE_NAME')}" />                      
+                              <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1016',localChanger.direction)}" name="m1016" action="#{menueReader.getXMLValue('m1016', 'MIT_FILE_NAME')}"  />
+                       </rich:panelMenuGroup>
+                       <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m1017',localChanger.direction)}">
+                           <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1018',localChanger.direction)}" name="m1018" action="#{menueReader.getXMLValue('m1018', 'MIT_FILE_NAME')}"  />
+                           <rich:panelMenuItem label="#{menueReader.getMenuTitle('m1019',localChanger.direction)}" name="m1019" action="#{menueReader.getXMLValue('m1019', 'MIT_FILE_NAME')}"  />
+                       </rich:panelMenuGroup>
+                   </rich:panelMenuGroup> 
+                    
+                </rich:panelMenuGroup>
+                
+                <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m2000',localChanger.direction)}" >
+                    <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m2001',localChanger.direction)}" >
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m2002',localChanger.direction)}" name="m2002" action="#{menueReader.getXMLValue('m2002', 'MIT_FILE_NAME')}"  />
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m2003',localChanger.direction)}" name="m2003" action="#{menueReader.getXMLValue('m2003', 'MIT_FILE_NAME')}"  />
+                    </rich:panelMenuGroup>
+                    
+                    <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m2004',localChanger.direction)}" >
+                    </rich:panelMenuGroup>
+                </rich:panelMenuGroup>
+                
+                <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m3000',localChanger.direction)}" >
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m3001',localChanger.direction)}" name="m3001" action="#{menueReader.getXMLValue('m3001', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m3002',localChanger.direction)}" name="m3002" action="#{menueReader.getXMLValue('m3002', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m3003',localChanger.direction)}" name="m3003" action="#{menueReader.getXMLValue('m3003', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m3004',localChanger.direction)}" name="m3004" action="#{menueReader.getXMLValue('m3004', 'MIT_FILE_NAME')}"  />
+                    
+                </rich:panelMenuGroup>
+                
+                <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m4000',localChanger.direction)}" >
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m4001',localChanger.direction)}" name="m4001" action="#{menueReader.getXMLValue('m4001', 'MIT_FILE_NAME')}"  />
+                
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m4003',localChanger.direction)}" name="m4003" action="#{menueReader.getXMLValue('m4003', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m4004',localChanger.direction)}" name="m4004" action="#{menueReader.getXMLValue('m4004', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m4005',localChanger.direction)}" name="m4005" action="#{menueReader.getXMLValue('m4005', 'MIT_FILE_NAME')}"  />                
+                </rich:panelMenuGroup>
+                
+                <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m5000',localChanger.direction)}">
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m5001',localChanger.direction)}" name="m5001" action="#{menueReader.getXMLValue('m5001', 'MIT_FILE_NAME')}"/>                  
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m5002',localChanger.direction)}" name="m5002" action="#{menueReader.getXMLValue('m5002', 'MIT_FILE_NAME')}"/>
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m5003',localChanger.direction)}" name="m5003" action="#{menueReader.getXMLValue('m5003', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m5004',localChanger.direction)}" name="m5004" action="#{menueReader.getXMLValue('m5004', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m5005',localChanger.direction)}" name="m5005" action="#{menueReader.getXMLValue('m5005', 'MIT_FILE_NAME')}" />
+                    
+                </rich:panelMenuGroup>
+                
+                
+                <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m6000',locmenueReader.direction)}" >
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6001',localChanger.direction)}" name="m6001" action="#{menueReader.getXMLValue('m6001', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuGroup label="#{menueReader.getMenuTitle('m6002',localChanger.direction)}" >
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6003',localChanger.direction)}" name="m6003" action="#{menueReader.getXMLValue('me6003','MIT_FILE_NAME')}"  />
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6004',localChanger.direction)}" name="m6004" action="#{menueReader.getXMLValue('m6004', 'MIT_FILE_NAME')}"  />
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6005',localChanger.direction)}" name="m6005" action="#{menueReader.getXMLValue('6005', 'MIT_FILE_NAME')}"  />
+                        <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6006',localChanger.direction)}" name="m6006" action="#{menueReader.getXMLValue('m6006', 'MIT_FILE_NAME')}"  />
+                    </rich:panelMenuGroup>
+                    
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6007',localChanger.direction)}" name="m6007" action="#{menueReader.getXMLValue('m6007', 'MIT_FILE_NAME')}"  />
+                    <rich:panelMenuItem label="#{menueReader.getMenuTitle('m6008',localChanger.direction)}" name="m6008" action="#{menueReader.getXMLValue('m6008', 'MIT_FILE_NAME')}"  />
+                </rich:panelMenuGroup>
+                
+                  
+                
+            </rich:panelMenu>
+         
+        </h:panelGrid>
+        
+    </h:form>
+    </div>
+</ui:composition>
+ </body> </html>  

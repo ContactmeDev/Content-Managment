@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <context-param>
+        <param-name>connectionNumber</param-name>
+        <param-value>2</param-value>
+    </context-param>
+    <context-param>
+        <param-name>systemName0</param-name>
+        <param-value>ZAIN One</param-value>
+    </context-param>
+    <context-param>
+        <param-name>VPNStatus</param-name>
+        <param-value>/root/cmeTrace/vpnc_status.txt</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>runnerPath0</param-name>
+        <param-value>/home/apps/Prod/SMPP/jsmpp/runState.txt</param-value>
+    </context-param>
+    <context-param>
+        <param-name>binderPath0</param-name>
+        <param-value>/home/apps/Prod/SMPP/jsmpp/bindStatus.txt</param-value>
+    </context-param>
+    <context-param>
+        <param-name>starter0</param-name>
+        <param-value>/home/apps/cmeScript/start_jsmpp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>stopper0</param-name>
+        <param-value>/home/apps/cmeScript/stop_jsmpp</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>systemName1</param-name>
+        <param-value>ZAIN Two</param-value>
+    </context-param>
+    <context-param>
+        <param-name>runnerPath1</param-name>
+        <param-value>/home/apps/Prod/SMPP/jsmpp/runStateSecond.txt</param-value>
+    </context-param>
+    <context-param>
+        <param-name>binderPath1</param-name>
+        <param-value>/home/apps/Prod/SMPP/jsmpp/bindStatusSecond.txt</param-value>
+    </context-param>
+    <context-param>
+        <param-name>starter1</param-name>
+        <param-value>/home/apps/cmeScript/start_jsmppSecond</param-value>
+    </context-param>
+    <context-param>
+        <param-name>stopper1</param-name>
+        <param-value>/home/apps/cmeScript/stop_jsmppSecond</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>vPNStopper</param-name>
+        <param-value>/root/cmeScript/stop_vpnc</param-value>
+    </context-param>
+       
+    <context-param>
+       
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Production</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS_PRESERVE_STATE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>org.richfaces.skin</param-name>
+        <param-value>#{lookAndFeel.skin}</param-value>
+            <!-- blueSky, classic, DEFAULT, deepMarine, ruby, emeraldTown -->
+    </context-param>
+    <context-param>
+        <param-name>org.richfaces.push.jms.enabled</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.richfaces.enableControlSkinning</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.richfaces.enableControlSkinningClasses</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
+    <filter>   
+        <display-name>RichFaces Filter</display-name>   
+        <filter-name>richfaces</filter-name>   
+        <filter-class>org.ajax4jsf.Filter</filter-class>   
+    </filter>   
+    
+     <filter-mapping>   
+        <filter-name>richfaces</filter-name>   
+        <servlet-name>Faces Servlet</servlet-name>  
+        <dispatcher>REQUEST</dispatcher>  
+        <dispatcher>FORWARD</dispatcher>  
+        <dispatcher>INCLUDE</dispatcher>  
+    </filter-mapping>  
+  
+  
+
+    
+</web-app>

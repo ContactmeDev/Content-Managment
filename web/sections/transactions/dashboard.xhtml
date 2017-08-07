@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <head>
+        <style>
+           .mouse
+           {
+               cursor: pointer;
+               
+           }
+        </style>
+
+    </head>
+    <body>
+        <ui:composition> <!--template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">  Dashboard </ui:define> 
+             <ui:define name="content">-->
+            
+            <rich:panel>
+                <h:form id="form1">
+                    <a4j:poll id="statusPoll1" interval="5000" enabled="true"  action="#{dashBoard.retrieveStatus(true)}" render="statusPoll1,grid"/>
+                     <rich:dataGrid value="#{dashBoard.dashboardStatus}"  id="grid" var="dboard"  columns="2" elements="9" iterationStatusVar="it">
+                        <rich:panel bodyClass="pbody">
+                            <f:facet name="header">
+                                <h:outputText value="#{dash.m_Col_sysName}" />
+                            </f:facet>
+                            
+                            <h:panelGrid columns="6">
+                                 
+                                <h:outputText value="#{dash.m_Col_appStatus}" style="font-weight: bold" /> 
+                                <h:graphicImage  rendered="#{dboard.systemUp}"  library="images" name="connect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{not dboard.systemUp}"  library="images" name="disconnect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{dboard.systemUp}"  styleClass="mouse" library="images" name="Stop.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="#{dash.m_notify2}">
+                                    <f:ajax execute="@this"   render="grid"    event="click"  listener="#{dashBoard.stopSystem(it.index)}"/>
+                                </h:graphicImage>
+                                <h:graphicImage  rendered="#{not dboard.systemUp}"  styleClass="mouse"  library="images" name="Play.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="#{dash.m_notify1}">
+                                    <f:ajax execute="@this"   render="grid"    event="click"  listener="#{dashBoard.startSystem(it.index)}" />
+                                </h:graphicImage>
+                                <h:outputLabel value="#{dashBoard.getActionMessage(it.index)}" />
+                                
+
+                             </h:panelGrid>
+                 
+                             <h:panelGrid columns="3">
+                                 <h:outputText value="#{dash.m_Col_runDate} #{dboard.runOnDate}" rendered="#{dboard.systemUp}" style="width: 200px;font-weight: bold"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=" #{dash.m_Col_processId} #{dboard.PId}" rendered="#{dboard.systemUp}" style="width: 100px;font-weight: bold"/>
+                             </h:panelGrid>
+                               
+                             <h:panelGrid columns="6" >
+                                 <h:outputText value="#{dash.m_Col_binding}" style="font-weight: bold" />
+                              
+                                <h:graphicImage  rendered="#{dboard.connectionBind}"   library="images" name="connect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{not dboard.connectionBind}"  library="images" name="disconnect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{ dboard.connectionBind}"    library="images"  styleClass="mouse" name="Stop.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="#{dash.m_notify4}">
+                                    <f:ajax execute="@this"   render="grid"    event="click"  listener="#{dashBoard.stopVpn()}"/>
+                                </h:graphicImage>
+                                <h:graphicImage  rendered="#{not dboard.connectionBind}"   styleClass="mouse" library="images" name="Play.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="#{dash.m_notify3}">
+                                    <f:ajax execute="@this"   render="grid"    event="click"  listener="#{dashBoard.startVpn()}"/>
+                                </h:graphicImage>
+                                <h:outputText value=" #{dash.m_Col_sysId} #{dboard.sysId}" style="width: 100px;font-weight: bold"/>
+
+                            </h:panelGrid>
+                            
+                        </rich:panel>
+                        
+                    </rich:dataGrid>
+                </h:form>
+            </rich:panel>
+        <rich:panel>
+                       
+                <f:facet name="header">
+                    <h:outputText value="CPS1  Status" />
+                </f:facet>
+             <h:form id="formId"> 
+                 <a4j:poll id="statusPoll" interval="5000" enabled="true"  action="#{dashBoard.retrieveStatus(true)}" render="statusPoll,statusGridID,statusGridID2,statusGridID3,grid5"/>
+                             <h:panelGrid columns="5" id="statusGridID">
+                                 
+                                <h:outputText value="Application Status:" style="font-weight: bold" /> 
+                                <h:graphicImage  rendered="#{dashBoard.isSystemUp(1)}"  library="images" name="connect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{not dashBoard.isSystemUp(1)}"  library="images" name="disconnect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{dashBoard.isSystemUp(1)}"  styleClass="mouse" library="images" name="Stop.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Stop the Application">
+                                    <f:ajax execute="@this"   render="formId"    event="click"  listener="#{dashBoard.stopSystem(1)}"/>
+                                </h:graphicImage>
+                                <h:graphicImage  rendered="#{not dashBoard.isSystemUp(1)}"  styleClass="mouse"  library="images" name="Play.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Start the Application">
+                                    <f:ajax execute="@this"   render="formId"    event="click"  listener="#{dashBoard.startSystem(1)}" />
+                                </h:graphicImage>
+
+                             </h:panelGrid>
+                 
+                             <h:panelGrid columns="3" id="statusGridID2">
+                                 <h:outputText value=" Run on: #{dashBoard.getRunDate(1)}" rendered="#{dashBoard.isSystemUp(1)}" style="width: 200px;font-weight: bold"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=" Process ID: #{dashBoard.getProcessID(1)}" rendered="#{dashBoard.isSystemUp(1)}" style="width: 100px;font-weight: bold"/>
+                             </h:panelGrid>
+                               
+                             <h:panelGrid columns="6" id="statusGridID3">
+                                <h:outputText value="Binding Status:" style="font-weight: bold" />
+                             <!--<h:outputText value="#{dashBoard.isSmscBind(1)}" style="width: 200px" /> -->
+                                <h:graphicImage  rendered="#{dashBoard.isSmscBind(1)}"   library="images" name="connect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{not dashBoard.isSmscBind(1)}"  library="images" name="disconnect.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px"/>
+                                <h:graphicImage  rendered="#{ dashBoard.isSmscBind(1)}"    library="images"  styleClass="mouse" name="Stop.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Stop VPNC">
+                                    <f:ajax execute="@this"   render="formId"    event="click"  listener="#{dashBoard.stopVpn()}"/>
+                                </h:graphicImage>
+                                <h:graphicImage  rendered="#{not dashBoard.isSmscBind(1)}"   styleClass="mouse" library="images" name="Play.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Start VPNC">
+                                    <f:ajax execute="@this"   render="formId"    event="click"  listener="#{dashBoard.startVpn()}"/>
+                                </h:graphicImage>
+                                <h:outputText value=" System ID: #{dashBoard.getSystemID(1)}" style="width: 100px;font-weight: bold"/>
+
+                            </h:panelGrid>
+                 
+                              <h:panelGrid  columns="3" id="grid5">
+                                VPN Status
+                                <h:graphicImage   rendered="#{dashBoard.vpnStatus}"    library="images"  styleClass="mouse" name="Play.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Stop VPNC">
+                                    
+                                </h:graphicImage> 
+                                <h:graphicImage   rendered="#{ not dashBoard.vpnStatus}"    library="images"  styleClass="mouse" name="Stop.png" style="border: 0px; margin-right: 1em;" height="35px" width="40px" title="Stop VPNC">
+                                    
+                                </h:graphicImage>
+                            </h:panelGrid>
+                         
+                    </h:form> 
+                  </rich:panel>
+            
+            <rich:panel>
+                <f:facet name="header">
+                    <h:outputText value="Messages  Status" />
+                </f:facet>
+
+                        Pending Messages: <h:outputText value="#{trafficOut.pendinCount}"/><br></br>
+
+                        Not Sent Messages: <h:outputText value="#{trafficOut.notSendCount}"/><br></br>
+
+                        Error Messages:  <h:outputText value="#{trafficOut.errorCount}"/><br></br>
+
+                        Sent Messages:  <h:outputText value="#{trafficOut.sendCount}"/><br></br>
+
+                        TimeOut Messages: <h:outputText value="#{trafficOut.toutCount}"/><br></br>
+
+
+                        <p:chart type="pie" model="#{trafficOut.pieModel1}"   style=" width:400px;height:300px"/>
+
+                    </rich:panel>
+                 
+                 
+                 <rich:panel>
+                <f:facet name="header">
+                    <h:outputText value="Workshop" />
+                </f:facet>
+                  
+                     
+                 </rich:panel>
+
+                    
+            
+       <!-- </ui:define> -->
+    </ui:composition>
+    </body>
+</html>
+
